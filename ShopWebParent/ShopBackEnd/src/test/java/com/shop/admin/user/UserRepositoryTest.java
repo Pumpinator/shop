@@ -21,12 +21,63 @@ public class UserRepositoryTest {
     private UserRepository userRepository;
     @Autowired
     private TestEntityManager testEntityManager;
+
     @Test
-    public void testCreateUser() {
+    public void testCreateUserWithOneRole() {
         Role roleAdmin = testEntityManager.find(Role.class, 1);
-        User userAlejandro = new User("alejandro@loutrecode.net", "alejandro2304", "Alejandro", "Delgado Cardona");
+        User userAlejandro = new User("eviladc@hotmail.com", "alejandro2023", "Alejandro", "Delgado Cardona");
         userAlejandro.addRole(roleAdmin);
         User savedUser = userRepository.save(userAlejandro);
         assertThat(savedUser.getId()).isGreaterThan(0);
+    }
+
+    @Test
+    public void testCreateUserWithTwoRoles() {
+        Role roleEditor = new Role(3);
+        Role roleAssistant = new Role(5);
+        User userAlejandra = new User("aledelrociocar@hotmail.com", "alejandra2023", "Alejandra Del Rocío", "Cardona Guerra");
+        userAlejandra.addRole(roleEditor);
+        userAlejandra.addRole(roleAssistant);
+        User savedUser = userRepository.save(userAlejandra);
+        assertThat(savedUser.getId()).isGreaterThan(0);
+    }
+
+    @Test
+    public void testGetUserById() {
+        User userAlejandro = userRepository.findById(1).get();
+        System.out.println(userAlejandro);
+        assertThat(userAlejandro.getId()).isNotNull();
+    }
+
+    @Test
+    public void testGetAllUsers() {
+        Iterable<User> users = userRepository.findAll();
+        users.forEach(user -> {
+            System.out.println(user);
+        });
+    }
+
+    @Test
+    public void testUpdateUser() {
+        User userAlejandro = userRepository.findById(1).get();
+        userAlejandro.setEnabled(true);
+        userAlejandro.setEmail("alejandrodcardona5@hotmail.com");
+        userRepository.save(userAlejandro);
+    }
+
+    @Test
+    public void testUpdateUserRoles() {
+        User userAlejandra = userRepository.findById(2).get();
+        Role roleEditor = new Role(3);
+        Role roleSalesperson = new Role(2);
+        userAlejandra.getRoles().remove(roleEditor);
+        userAlejandra.addRole(roleSalesperson);
+        userRepository.save(userAlejandra);
+    }
+
+    @Test
+    public void testDeleteUserById() {
+        Integer userId = 2;
+        userRepository.deleteById(userId);
     }
 }
