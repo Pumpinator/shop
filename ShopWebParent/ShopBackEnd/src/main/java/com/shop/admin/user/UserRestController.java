@@ -11,7 +11,7 @@ public class UserRestController {
     private UserService userService;
 
     @PostMapping("/users/check_email")
-    public String checkEmail(@Param("email") String email) {
-        return userService.isEmailUnique(email) ? "Ok" : "Error";
+    public String checkEmail(@Param("id") Integer id, @Param("email") String email) {
+        return userService.isEmailUnique(id, email) ? "Ok" : "Error";
     }
 }

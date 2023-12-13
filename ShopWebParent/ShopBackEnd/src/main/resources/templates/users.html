@@ -88,8 +88,8 @@
                 <td>[[${user.email}]]</td>
                 <td>[[${user.roles}]]</td>
                 <td class="text-center">
-                    <i th:if="${user.enabled == true}" class="fa-solid fa-circle-check fa-lg icon-dark"></i>
-                    <i th:if="${user.enabled == false}" class="fa-solid fa-circle-xmark fa-lg icon-dark"></i>
+                    <i class="fa-solid fa-circle-check fa-lg icon-dark" th:if="${user.enabled == true}" ></i>
+                    <i class="fa-solid fa-circle-xmark fa-lg icon-dark" th:if="${user.enabled == false}"></i>
                 </td>
                 <td>
                     <a class="icon-secondary" th:href="@{'/users/update/' + ${user.id}}" title="Update User">
