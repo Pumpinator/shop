@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 
 import com.shop.common.entity.User;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -31,7 +32,23 @@ public class UserController {
         user.setEnabled(true);
         model.addAttribute("user", user);
         model.addAttribute("roles", roles);
+        model.addAttribute("pageTitle", "Create User");
         return "user_form";
+    }
+
+    @GetMapping("/users/update/{id}")
+    public String update(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            User user = userService.getById(id);
+            List<Role> roles = userService.getRoles();
+            model.addAttribute("user", user);
+            model.addAttribute("roles", roles);
+            model.addAttribute("pageTitle", "Edit User " + user.getFirstName());
+            return "user_form";
+        } catch (UserNotFoundException exception) {
+            redirectAttributes.addFlashAttribute("message", exception.getMessage());
+            return "redirect:/users";
+        }
     }
 
     @PostMapping("/users/save")

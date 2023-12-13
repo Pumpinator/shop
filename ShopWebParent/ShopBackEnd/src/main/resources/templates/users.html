@@ -3,17 +3,22 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minium-scale=1.0">
-    <title>Home - Shop Admin</title>
+    <title>Manage Users | Shop Admin</title>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/sweetalert2/11.10.1/dist/sweetalert2.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/font-awesome/6.4.2/css/all.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
     <script type="text/javascript" th:src="@{/webjars/jquery/3.6.4/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/sweetalert2/11.10.1/dist/sweetalert2.all.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/font-awesome/6.4.2/js/all.js}"></script>
 </head>
 <body>
 <div class="container-fluid">
     <div class="navbar navbar-expand-lg bg-dark navbar-dark">
         <div class="container-fluid">
             <a class="navbar-brand" th:href="@{/}">
-                <img th:src="@{/images/ShopAdminSmall.png}" alt="">
+                <img th:src="@{/img/ShopAdminSmall.png}" alt="">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNavbar">
                 <span class="navbar-toggler-icon"></span>
@@ -61,7 +66,7 @@
         <h1>Manage Users</h1>
         <a th:href="@{/users/create}">Create User</a>
     </div>
-    <div th:if="${message != null}" class="alert alert-dark text-center">
+    <div th:if="${message != null}" class="mt-3 alert alert-dark text-center">
         [[${message}]]
     </div>
     <div class="table-responsive">
@@ -72,7 +77,7 @@
                 <th scope="col">Full Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Roles</th>
-                <th scope="col">Enabled</th>
+                <th class="text-center" scope="col">Enabled</th>
                 <th scope="col"></th>
             </tr>
             </thead>
@@ -82,14 +87,25 @@
                 <td>[[${user.firstName}]] [[${user.lastName}]]</td>
                 <td>[[${user.email}]]</td>
                 <td>[[${user.roles}]]</td>
-                <td>[[${user.enabled}]]</td>
-                <td>Edit &nbsp; Delete</td>
+                <td class="text-center">
+                    <i th:if="${user.enabled == true}" class="fa-solid fa-circle-check fa-lg icon-dark"></i>
+                    <i th:if="${user.enabled == false}" class="fa-solid fa-circle-xmark fa-lg icon-dark"></i>
+                </td>
+                <td>
+                    <a class="icon-secondary" th:href="@{'/users/update/' + ${user.id}}" title="Update User">
+                        <i class="fa-solid fa-user-pen fa-lg"></i>
+                    </a>
+                    &nbsp;
+                    <a class="icon-secondary" href="">
+                        <i class="fa-solid fa-user-minus fa-lg"></i>
+                    </a>
+                </td>
             </tr>
             </tbody>
         </table>
     </div>
     <div class="text-center">
-        <p>Shop Control Panel - Copyright &copy; Shop</p>
+        <p>Admin Control Panel - Copyright &copy; Shop</p>
     </div>
 </div>
 </body>

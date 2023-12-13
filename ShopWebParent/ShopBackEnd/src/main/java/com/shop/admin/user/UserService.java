@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class UserService {
@@ -16,6 +17,14 @@ public class UserService {
     private RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    public User getById(Integer id) throws UserNotFoundException {
+        try {
+            return userRepository.findById(id).get();
+        } catch (NoSuchElementException exception) {
+            throw new UserNotFoundException("Could not find any user with id " + id);
+        }
+    }
 
     public List<User> getAll() {
         return (List<User>) userRepository.findAll();
