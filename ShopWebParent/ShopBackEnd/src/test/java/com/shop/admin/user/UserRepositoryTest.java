@@ -50,6 +50,13 @@ public class UserRepositoryTest {
     }
 
     @Test
+    public void testGetUserByEmail() {
+        String email = "eviladc@gmail.com";
+        User user = userRepository.findUserByEmail(email);
+        assertThat(user).isNotNull();
+    }
+
+    @Test
     public void testGetAllUsers() {
         Iterable<User> users = userRepository.findAll();
         users.forEach(user -> {
@@ -61,7 +68,7 @@ public class UserRepositoryTest {
     public void testUpdateUser() {
         User userAlejandro = userRepository.findById(1).get();
         userAlejandro.setEnabled(true);
-        userAlejandro.setEmail("alejandrodcardona5@hotmail.com");
+        userAlejandro.setEmail("eviladc@gmail.com");
         userRepository.save(userAlejandro);
     }
 

@@ -60,9 +60,9 @@
     <div>
         <h1 class="text-center">Manage Users | Create User</h1>
     </div>
-
     <div class="container-fluid">
-        <form class="row g-3" th:action="@{/users/save}" method="post" th:object="${user}">
+        <form class="row g-3" th:action="@{/users/save}" method="post" th:object="${user}"
+              onsubmit="return checkEmail(this)">
             <div class="col-md-6">
                 <label class="form-label">First Name</label>
                 <input type="text" class="form-control" th:field="*{firstName}" required minlength="2" maxlength="45">
@@ -100,7 +100,22 @@
             </div>
         </form>
     </div>
-
+    <div class="modal fade" tabindex="-1" aria-hidden="true" id="modalDialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" id="modalTitle">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalBody"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="text-center">
         <p>Shop Control Panel - Copyright &copy; Shop</p>
     </div>
@@ -111,6 +126,27 @@
             window.location = "[[@{/users}]]";
         });
     });
+
+    function checkEmail(form) {
+        url = "[[@{/users/check_email}]]";
+        emailValue = $("#email").val();
+        csrfValue = $("input[name='_csrf']").val();
+        params = {"email": emailValue, "_csrf": csrfValue};
+        $.post(url, params, (response) => {
+            if (response === "Ok") {
+                form.submit();
+            } else if (response === "Error") {
+                showModalDialog("Warning", "This email " + emailValue + " is already registered.")
+            }
+        });
+        return false;
+    }
+
+    function showModalDialog(title, body) {
+        $("#modalTitle").text(title);
+        $("#modalBody").text(body);
+        $("#modalDialog").modal("show");
+    }
 </script>
 </body>
 </html>
