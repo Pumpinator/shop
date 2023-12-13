@@ -58,11 +58,59 @@
         </div>
     </div>
     <div>
-        <h1>Welcome to Shop Admin Control Panel</h1>
+        <h1 class="text-center">Manage Users | Create User</h1>
     </div>
+
+    <div class="container-fluid">
+        <form class="row g-3" th:action="@{/users/save}" method="post" th:object="${user}">
+            <div class="col-md-6">
+                <label class="form-label">First Name</label>
+                <input type="text" class="form-control" th:field="*{firstName}" required minlength="2" maxlength="45">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Last Name</label>
+                <input type="text" class="form-control" th:field="*{lastName}" required minlength="2" maxlength="45">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" th:field="*{email}" required minlength="8" maxlength="128">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" th:field="*{password}" required minlength="4"
+                       maxlength="64">
+            </div>
+            <div class="col-12">
+                <label class="form-label">Roles</label>
+                <th:block th:each="role : ${roles}">
+                    <div class="form-check">
+                        <label class="form-check-label">[[${role.name}]]</label>
+                        <input type="checkbox" class="form-check-input" th:field="*{roles}" th:value="${role.id}">
+                        <small>- [[${role.description}]]</small>
+                    </div>
+                </th:block>
+            </div>
+            <div class="form-check col-12">
+                <label class="form-check-label">Enabled</label>
+                <input type="checkbox" class="form-check-input" th:field="*{enabled}">
+            </div>
+            <div class="col-12 text-center">
+                <button type="submit" class="btn btn-dark">Create</button>
+                <button type="button" class="btn btn-secondary" id="buttonCancel">Cancel</button>
+            </div>
+        </form>
+    </div>
+
     <div class="text-center">
         <p>Shop Control Panel - Copyright &copy; Shop</p>
     </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(() => {
+        $("#buttonCancel").on("click", () => {
+            window.location = "[[@{/users}]]";
+        });
+    });
+</script>
 </body>
 </html>
