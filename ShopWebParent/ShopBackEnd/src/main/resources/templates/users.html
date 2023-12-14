@@ -88,15 +88,18 @@
                 <td>[[${user.email}]]</td>
                 <td>[[${user.roles}]]</td>
                 <td class="text-center">
-                    <i class="fa-solid fa-circle-check fa-lg icon-dark" th:if="${user.enabled == true}" ></i>
-                    <i class="fa-solid fa-circle-xmark fa-lg icon-dark" th:if="${user.enabled == false}"></i>
+                    <a class="icon-dark" th:href="@{'/users/' + ${user.id} + '/enabled/' + ${!user.enabled} }">
+                        <i class="fa-solid fa-circle-check fa-lg" th:if="${user.enabled == true}" title="Disable User"></i>
+                        <i class="fa-solid fa-circle-xmark fa-lg" th:if="${user.enabled == false}" title="Enable User"></i>
+                    </a>
                 </td>
                 <td>
                     <a class="icon-secondary" th:href="@{'/users/update/' + ${user.id}}" title="Update User">
                         <i class="fa-solid fa-user-pen fa-lg"></i>
                     </a>
                     &nbsp;
-                    <a class="icon-secondary" href="">
+                    <a class="icon-secondary link-delete" th:href="@{'/users/delete/' + ${user.id}}" th:id="${user.id}"
+                       title="Delete User">
                         <i class="fa-solid fa-user-minus fa-lg"></i>
                     </a>
                 </td>
@@ -108,5 +111,26 @@
         <p>Admin Control Panel - Copyright &copy; Shop</p>
     </div>
 </div>
+<script>
+    $(".link-delete").on("click", (event) => {
+        event.preventDefault();
+        url = $(event.currentTarget);
+        console.log(url);
+        idValue = url.attr("id");
+        Swal.fire({
+            title: "Do you really want to delete this user?",
+            text: "User Id:" + idValue,
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#000",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url.attr("href");
+            }
+        });
+    });
+</script>
 </body>
 </html>

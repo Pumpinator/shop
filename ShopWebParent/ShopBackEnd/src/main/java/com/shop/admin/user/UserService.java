@@ -5,11 +5,13 @@ import com.shop.common.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
+@Transactional
 public class UserService {
     @Autowired
     private UserRepository userRepository;
@@ -47,6 +49,18 @@ public class UserService {
             encodePassword(user);
         }
         userRepository.save(user);
+    }
+
+    public void updateStatus(Integer id, boolean enabled) {
+        userRepository.updateUserStatus(id, enabled);
+    }
+
+    public void delete(Integer id) throws UserNotFoundException {
+        Long countUserById = userRepository.countUserById(id);
+        if (countUserById == null || countUserById == 0) {
+            throw new UserNotFoundException("Could not find any user with id " + id);
+        }
+        userRepository.deleteById(id);
     }
 
     private void encodePassword(User user) {

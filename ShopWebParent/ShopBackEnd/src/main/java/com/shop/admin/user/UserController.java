@@ -58,4 +58,23 @@ public class UserController {
         redirectAttributes.addFlashAttribute("message", "The user has been saved.");
         return "redirect:/users";
     }
+
+    @GetMapping("/users/{id}/enabled/{enabled}")
+    public String updateEnabled(@PathVariable(name = "id") Integer id, @PathVariable(name = "enabled") boolean enabled, RedirectAttributes redirectAttributes) {
+        userService.updateStatus(id, enabled);
+        String message = "The user id " + id + " has been " + (enabled ? "enabled" : "disabled");
+        redirectAttributes.addFlashAttribute("message", message);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/users/delete/{id}")
+    public String delete(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
+        try {
+            userService.delete(id);
+            redirectAttributes.addFlashAttribute("message", "The user id " + id + " has been deleted successfully");
+        } catch (UserNotFoundException exception) {
+            redirectAttributes.addFlashAttribute("message", exception.getMessage());
+        }
+        return "redirect:/users";
+    }
 }

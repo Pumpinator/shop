@@ -83,8 +83,21 @@ public class UserRepositoryTest {
     }
 
     @Test
+    public void testUpdateUserEnabled() {
+        Integer id = 1;
+        userRepository.updateUserStatus(id, true);
+    }
+
+    @Test
     public void testDeleteUserById() {
         Integer userId = 2;
         userRepository.deleteById(userId);
+    }
+
+    @Test
+    public void testCountUserById() {
+        Integer id = 1;
+        Long count = userRepository.countUserById(id);
+        assertThat(count).isNotNull().isGreaterThan(0);
     }
 }
