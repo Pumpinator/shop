@@ -9,3 +9,10 @@
 *.icon-secondary {
     color: #6c757d
 }
+
+#thumbnail {
+    width: 150px;
+    max-width: 150px;
+    height: 200px;
+    max-height: 200px;
+}

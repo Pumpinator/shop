@@ -1,5 +1,8 @@
-package com.shop.admin.user;
+package com.shop.admin.service;
 
+import com.shop.admin.exception.UserNotFoundException;
+import com.shop.admin.repository.RoleRepository;
+import com.shop.admin.repository.UserRepository;
 import com.shop.common.entity.Role;
 import com.shop.common.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +39,7 @@ public class UserService {
         return (List<Role>) roleRepository.findAll();
     }
 
-    public void save(User user) {
+    public User save(User user) {
         boolean isUpdatingUser = user.getId() != null;
         if (isUpdatingUser) {
             User updatedUser = userRepository.findById(user.getId()).get();
@@ -48,7 +51,7 @@ public class UserService {
         } else {
             encodePassword(user);
         }
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     public void updateStatus(Integer id, boolean enabled) {

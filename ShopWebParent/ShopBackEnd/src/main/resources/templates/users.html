@@ -88,9 +88,12 @@
                 <td>[[${user.email}]]</td>
                 <td>[[${user.roles}]]</td>
                 <td class="text-center">
-                    <a class="icon-dark" th:href="@{'/users/' + ${user.id} + '/enabled/' + ${!user.enabled} }">
-                        <i class="fa-solid fa-circle-check fa-lg" th:if="${user.enabled == true}" title="Disable User"></i>
-                        <i class="fa-solid fa-circle-xmark fa-lg" th:if="${user.enabled == false}" title="Enable User"></i>
+                    <a class="icon-dark link-enabled" th:fullName="${user.firstName + ' ' + user.lastName}"
+                       th:href="@{'/users/' + ${user.id} + '/enabled/' + ${!user.enabled} }">
+                        <i class="fa-solid fa-circle-check fa-lg" th:if="${user.enabled == true}"
+                           title="Disable User"></i>
+                        <i class="fa-solid fa-circle-xmark fa-lg" th:if="${user.enabled == false}"
+                           title="Enable User"></i>
                     </a>
                 </td>
                 <td>
@@ -98,8 +101,8 @@
                         <i class="fa-solid fa-user-pen fa-lg"></i>
                     </a>
                     &nbsp;
-                    <a class="icon-secondary link-delete" th:href="@{'/users/delete/' + ${user.id}}" th:id="${user.id}"
-                       title="Delete User">
+                    <a class="icon-secondary link-delete" title="Delete User" th:href="@{'/users/delete/' + ${user.id}}"
+                       th:fullName="${user.firstName + ' ' + user.lastName}">
                         <i class="fa-solid fa-user-minus fa-lg"></i>
                     </a>
                 </td>
@@ -116,15 +119,34 @@
         event.preventDefault();
         url = $(event.currentTarget);
         console.log(url);
-        idValue = url.attr("id");
+        fullNameValue = url.attr("fullName");
         Swal.fire({
             title: "Do you really want to delete this user?",
-            text: "User Id:" + idValue,
+            text: fullNameValue + " will be deleted! This decision is irreversible.",
             icon: "question",
             showCancelButton: true,
             confirmButtonColor: "#000",
             cancelButtonColor: "#6c757d",
             confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url.attr("href");
+            }
+        });
+    });
+    $(".link-enabled").on("click", (event) => {
+        event.preventDefault();
+        url = $(event.currentTarget);
+        console.log(url);
+        fullNameValue = url.attr("fullName");
+        Swal.fire({
+            title: "Do you want to update user status?",
+            text: fullNameValue + " status will be updated!",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#000",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: "Yes, update it!"
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = url.attr("href");

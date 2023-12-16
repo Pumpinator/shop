@@ -1,16 +1,23 @@
-package com.shop.admin.user;
+package com.shop.admin.controller;
 
+import java.io.IOException;
 import java.util.List;
 
+import com.shop.admin.util.FileUploadUtil;
+import com.shop.admin.exception.UserNotFoundException;
+import com.shop.admin.service.UserService;
 import com.shop.common.entity.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 
 import com.shop.common.entity.User;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -52,9 +59,18 @@ public class UserController {
     }
 
     @PostMapping("/users/save")
-    public String save(User user, RedirectAttributes redirectAttributes) {
-        System.out.println(user); // ELIMINAR PRONTO
-        userService.save(user);
+    public String save(User user, RedirectAttributes redirectAttributes, @RequestParam("image") MultipartFile multipartFile) throws IOException {
+        if (!multipartFile.isEmpty()) {
+            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            user.setPhotos(fileName);
+            User savedUser = userService.save(user);
+            String directory = "user-photos/" + savedUser.getId();
+            FileUploadUtil.cleanDirectory(directory);
+            FileUploadUtil.saveFile(directory, fileName, multipartFile);
+        } else {
+            if (user.getPhotos().isEmpty()) user.setPhotos(null);
+            userService.save(user);
+        }
         redirectAttributes.addFlashAttribute("message", "The user has been saved.");
         return "redirect:/users";
     }
@@ -62,7 +78,7 @@ public class UserController {
     @GetMapping("/users/{id}/enabled/{enabled}")
     public String updateEnabled(@PathVariable(name = "id") Integer id, @PathVariable(name = "enabled") boolean enabled, RedirectAttributes redirectAttributes) {
         userService.updateStatus(id, enabled);
-        String message = "The user id " + id + " has been " + (enabled ? "enabled" : "disabled");
+        String message = "The user id " + id + " has been " + (enabled ? "enabled." : "disabled.");
         redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/users";
     }

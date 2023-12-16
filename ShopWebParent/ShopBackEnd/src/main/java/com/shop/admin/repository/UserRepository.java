@@ -1,4 +1,4 @@
-package com.shop.admin.user;
+package com.shop.admin.repository;
 
 import com.shop.common.entity.User;
 import org.springframework.data.jpa.repository.Modifying;
