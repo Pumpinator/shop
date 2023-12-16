@@ -8,6 +8,7 @@ import com.shop.admin.exception.UserNotFoundException;
 import com.shop.admin.service.UserService;
 import com.shop.common.entity.Role;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,9 +27,30 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/users")
-    public String getAll(Model model) {
-        List<User> users = userService.getAll();
+    public String getFirstPage(Model model) {
+        return paginate(1, model);
+    }
+
+    @GetMapping("/users/page/{pageNumber}")
+    public String paginate(@PathVariable(name = "pageNumber") int pageNumber, Model model) {
+        Page<User> userPage = userService.paginate(pageNumber);
+        List<User> users = userPage.getContent();
+
+        long pageSize = userPage.getSize();
+        long totalPages = userPage.getTotalPages();
+        long startCount = (pageNumber - 1) * pageSize + 1;
+        long endCount = startCount + pageSize - 1;
+        long totalCount = userPage.getTotalElements();
+        if (endCount > totalCount) {
+            endCount = totalCount;
+        }
+
         model.addAttribute("users", users);
+        model.addAttribute("startCount", startCount);
+        model.addAttribute("endCount", endCount);
+        model.addAttribute("totalCount", totalCount);
+        model.addAttribute("currentPage", pageNumber);
+        model.addAttribute("totalPages", totalPages);
         return "users";
     }
 

@@ -6,6 +6,9 @@ import com.shop.admin.repository.UserRepository;
 import com.shop.common.entity.Role;
 import com.shop.common.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +36,12 @@ public class UserService {
 
     public List<User> getAll() {
         return (List<User>) userRepository.findAll();
+    }
+
+    public Page<User> paginate(int pageNumber) {
+        int pageSize = 5;
+        Pageable pageable = PageRequest.of(pageNumber-1, pageSize);
+        return userRepository.findAll(pageable);
     }
 
     public List<Role> getRoles() {

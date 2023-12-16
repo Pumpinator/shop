@@ -83,7 +83,9 @@
             </thead>
             <tbody class="table-group-divider">
             <tr th:each="user : ${users}">
-                <td>[[${userStat.count}]]</td>
+                <td class="text-center">
+                    <img id="listThumbnail" alt="Photo Preview" th:src="@{${user.photoPath}}">
+                </td>
                 <td>[[${user.firstName}]] [[${user.lastName}]]</td>
                 <td>[[${user.email}]]</td>
                 <td>[[${user.roles}]]</td>
@@ -111,6 +113,19 @@
         </table>
     </div>
     <div class="text-center">
+        <span th:if="${totalCount > 0}">Showing [[${startCount}]] to [[${endCount}]] of [[${totalCount}]] users</span>
+        <span th:unless="${totalCount > 0}">No users found</span>
+    </div>
+    <div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'"><a class="page-link" th:href="@{'/users/page/' + ${currentPage - 1}}">Previous</a></li>
+                <li class="page-item" th:each="page : ${#numbers.sequence(1, totalPages)}" th:class="${currentPage != page ? 'page-item' : 'page-item active'}"><a class="page-link"  th:href="@{'/users/page/' + ${page}}">[[${page}]]</a></li>
+                <li class="page-item" th:classappend="${currentPage == totalPages} ? 'page-item disabled' : 'page-item'"><a class="page-link" th:href="@{'/users/page/' + ${currentPage + 1}}">Next</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="text-end">
         <p>Admin Control Panel - Copyright &copy; Shop</p>
     </div>
 </div>

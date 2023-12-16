@@ -3,11 +3,41 @@
 }
 
 *.icon-dark {
-    color: #000
+    color: var(--bs-dark)
 }
 
 *.icon-secondary {
-    color: #6c757d
+    color: var(--bs-secondary)
+}
+
+.pagination > li > a
+{
+    background-color: var(--bs-secondary);
+    color: #FFF;
+}
+
+
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover
+{
+    color: var(--bs-dark);
+    background-color: #FFF;
+    border-color: #FFF;
+}
+
+.pagination > .active > a:hover
+{
+    background-color: #FFF !Important;
+    border: solid 1px #FFF;
+}
+
+.pagination > .active > a
+{
+    color: white;
+    background-color: var(--bs-dark) !Important;
+    border: solid 1px var(--bs-dark) !Important;
 }
 
 #thumbnail {
@@ -15,4 +45,12 @@
     max-width: 150px;
     height: 200px;
     max-height: 200px;
+}
+
+#listThumbnail {
+    width: 45px;
+    max-width: 45px;
+    height: 60px;
+    max-height: 60px;
+    border-radius: 50%;
 }
