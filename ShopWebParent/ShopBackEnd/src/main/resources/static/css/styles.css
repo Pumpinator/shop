@@ -5,36 +5,71 @@
 *.icon-dark {
     color: var(--bs-dark)
 }
+*.icon-dark:hover {
+    color: var(--bs-secondary)
+}
 
 *.icon-secondary {
     color: var(--bs-secondary)
 }
 
-.pagination > li > a
-{
-    background-color: var(--bs-secondary);
-    color: #FFF;
+*.icon-secondary:hover {
+    color: var(--bs-dark)
 }
 
+div > a {
+    color: var(--bs-dark);
+    font-weight: bold;
+    text-decoration-thickness: 2px;
+}
+
+div > a:hover {
+    color: var(--bs-secondary);
+    font-weight: bold;
+    text-decoration-thickness: 2px;
+}
+
+.pagination > li > a
+{
+    background-color: #FFF;
+    color: var(--bs-dark);
+    border: #FFF;
+}
+
+.table > thead > tr > th > a {
+    color: var(--bs-dark);
+    text-decoration: none;
+}
+
+.table > thead > tr > th > a:hover {
+    color: var(--bs-secondary);
+    text-decoration: none;
+}
 
 .pagination > li > a:focus,
 .pagination > li > a:hover,
 .pagination > li > span:focus,
 .pagination > li > span:hover
 {
-    color: var(--bs-dark);
-    background-color: #FFF;
-    border-color: #FFF;
+    color: #FFF;
+    background-color: var(--bs-secondary);
+    border-color: var(--bs-secondary);
 }
 
 .pagination > .active > a:hover
 {
-    background-color: #FFF !Important;
-    border: solid 1px #FFF;
+    background-color: var(--bs-secondary) !Important;
+    border: solid 1px var(--bs-secondary);
 }
 
 .pagination > .active > a
 {
+    color: white;
+    background-color: var(--bs-dark) !Important;
+    border: solid 1px var(--bs-dark) !Important;
+}
+
+.pagination > .disabled > a {
     color: white;
     background-color: var(--bs-dark) !Important;
     border: solid 1px var(--bs-dark) !Important;

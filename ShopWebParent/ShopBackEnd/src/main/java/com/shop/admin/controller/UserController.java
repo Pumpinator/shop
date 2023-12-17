@@ -9,6 +9,7 @@ import com.shop.admin.service.UserService;
 import com.shop.common.entity.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,29 +29,29 @@ public class UserController {
 
     @GetMapping("/users")
     public String getFirstPage(Model model) {
-        return paginate(1, model);
+        return paginate(1, "firstName", "asc", model);
     }
 
     @GetMapping("/users/page/{pageNumber}")
-    public String paginate(@PathVariable(name = "pageNumber") int pageNumber, Model model) {
-        Page<User> userPage = userService.paginate(pageNumber);
+    public String paginate(@PathVariable(name = "pageNumber") int pageNumber, @Param("sortField") String sortField, @Param("sortOrder") String sortOrder, Model model) {
+        Page<User> userPage = userService.paginate(pageNumber, sortField, sortOrder);
         List<User> users = userPage.getContent();
-
         long pageSize = userPage.getSize();
         long totalPages = userPage.getTotalPages();
         long startCount = (pageNumber - 1) * pageSize + 1;
         long endCount = startCount + pageSize - 1;
         long totalCount = userPage.getTotalElements();
-        if (endCount > totalCount) {
-            endCount = totalCount;
-        }
-
+        if (endCount > totalCount) endCount = totalCount;
+        String reverseSortOrder = sortOrder.equals("asc") ? "desc" : "asc";
         model.addAttribute("users", users);
         model.addAttribute("startCount", startCount);
         model.addAttribute("endCount", endCount);
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("currentPage", pageNumber);
         model.addAttribute("totalPages", totalPages);
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortOrder", sortOrder);
+        model.addAttribute("reverseSortOrder", reverseSortOrder);
         return "users";
     }
 
