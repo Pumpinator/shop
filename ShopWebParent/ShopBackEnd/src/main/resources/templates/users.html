@@ -69,47 +69,40 @@
     <div th:if="${message != null}" class="mt-3 alert alert-dark text-center">
         [[${message}]]
     </div>
+    <div>
+        <form class="row row-cols-lg-auto g-1" th:action="@{/users/page/1}">
+            <div class="col-12">
+                <label class="visually-hidden">
+                    Filter
+                </label>
+                <input type="hidden" name="sortField" th:value="${sortField}">
+                <input type="hidden" name="sortOrder" th:value="${sortOrder}">
+                <div class="input-group">
+                    <div class="input-group-text">Filter</div>
+                    <input class="form-control" type="search" name="keyword" placeholder="Keyword" required
+                           th:value="${keyword}">
+                </div>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-dark w-100" value="Search">Search</button>
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-secondary w-100" value="Clear" onclick="clearFilter();">Clear
+                </button>
+            </div>
+        </form>
+    </div>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
             <tr>
                 <th scope="col"></th>
-                <th scope="col">
-                    <a th:if="${sortField != 'firstName'}"
-                       th:href="@{'/users/page/' + ${currentPage} + '?sortField=firstName&sortOrder=' + ${sortOrder}}">
-                        Full Name
-                    </a>
-                    <a th:if="${sortField == 'firstName'}"
-                       th:href="@{'/users/page/' + ${currentPage} + '?sortField=firstName&sortOrder=' + ${reverseSortOrder}}">
-                        Full Name
-                    </a>
-                    <i th:if="${sortField == 'firstName'}"
-                       th:class="${sortOrder == 'asc' ?  'fa-solid fa-arrow-up-a-z' : 'fa-solid fa-arrow-down-z-a'}"></i>
+                <th scope="col" th:replace="~{fragments :: column_link('firstName', 'Full Name')}">
                 </th>
-                <th scope="col">
-                    <a th:if="${sortField != 'email'}"
-                       th:href="@{'/users/page/' + ${currentPage} + '?sortField=email&sortOrder=' + ${sortOrder}}">
-                        Email
-                    </a>
-                    <a th:if="${sortField == 'email'}"
-                       th:href="@{'/users/page/' + ${currentPage} + '?sortField=email&sortOrder=' + ${reverseSortOrder}}">
-                        Email
-                    </a>
-                    <i th:if="${sortField == 'email'}"
-                       th:class="${sortOrder == 'asc' ?  'fa-solid fa-arrow-up-a-z' : 'fa-solid fa-arrow-down-z-a'}"></i>
+                <th scope="col" th:replace="~{fragments :: column_link('email', 'Email')}">
                 </th>
                 <th scope="col">Roles</th>
-                <th class="text-center" scope="col">
-                    <a th:if="${sortField != 'enabled'}"
-                       th:href="@{'/users/page/' + ${currentPage} + '?sortField=enabled&sortOrder=' + ${sortOrder}}">
-                        Enabled
-                    </a>
-                    <a th:if="${sortField == 'enabled'}"
-                       th:href="@{'/users/page/' + ${currentPage} + '?sortField=enabled&sortOrder=' + ${reverseSortOrder}}">
-                        Enabled
-                    </a>
-                    <i th:if="${sortField == 'enabled'}"
-                       th:class="${sortOrder == 'asc' ?  'fa-solid fa-arrow-down-wide-short' : 'fa-solid fa-arrow-up-wide-short'}"></i>
+                <th class="text-center" scope="col" th:replace="~{fragments :: column_link('enabled', 'Enabled')}">
                 </th>
                 <th scope="col"></th>
             </tr>
@@ -145,26 +138,30 @@
             </tbody>
         </table>
     </div>
+    <div class="row">
+        <div class="col text-lg-start text-center">
+            <span th:if="${totalCount > 0}">Showing [[${startCount}]] to [[${endCount}]] of [[${totalCount}]] users</span>
+            <span th:unless="${totalCount > 0}">No users found</span>
+        </div>
+        <div class="col" th:if="${totalPages > 1}">
+            <nav>
+                <ul class="pagination justify-content-lg-end justify-content-center">
+                    <li class="page-item" th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">
+                        <a th:replace="~{fragments :: pagination_link(${currentPage - 1}, 'Previous')}"></a>
+                    </li>
+                    <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, totalPages)}"
+                        th:class="${currentPage != pageNumber ? 'page-item' : 'page-item active disabled'}">
+                        <a th:replace="~{fragments :: pagination_link(${pageNumber}, ${pageNumber})}"></a>
+                    </li>
+                    <li class="page-item"
+                        th:classappend="${currentPage == totalPages} ? 'page-item disabled' : 'page-item'">
+                        <a th:replace="~{fragments :: pagination_link(${currentPage + 1}, 'Next')}"></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
     <div class="text-center">
-        <span th:if="${totalCount > 0}">Showing [[${startCount}]] to [[${endCount}]] of [[${totalCount}]] users</span>
-        <span th:unless="${totalCount > 0}">No users found</span>
-    </div>
-    <div>
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-                <li class="page-item" th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'"><a
-                        class="page-link" th:href="@{'/users/page/' + ${currentPage - 1} + '?sortField=' + ${sortField} + '&sortOrder=' + ${sortOrder}}">Previous</a></li>
-                <li class="page-item" th:each="page : ${#numbers.sequence(1, totalPages)}"
-                    th:class="${currentPage != page ? 'page-item' : 'page-item active disabled'}"><a class="page-link"
-                                                                                                     th:href="@{'/users/page/' + ${page} + '?sortField=' + ${sortField} + '&sortOrder=' + ${sortOrder}}">[[${page}]]</a>
-                </li>
-                <li class="page-item"
-                    th:classappend="${currentPage == totalPages} ? 'page-item disabled' : 'page-item'"><a
-                        class="page-link" th:href="@{'/users/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortOrder=' + ${sortOrder}}">Next</a></li>
-            </ul>
-        </nav>
-    </div>
-    <div class="text-end">
         <p>Admin Control Panel - Copyright &copy; Shop</p>
     </div>
 </div>
@@ -207,6 +204,10 @@
             }
         });
     });
+
+    function clearFilter() {
+        window.location = "[[@{/users}]]";
+    }
 </script>
 </body>
 </html>

@@ -97,6 +97,20 @@ public class UserRepositoryTest {
     }
 
     @Test
+    public void testGetAllUsersByKeyword() {
+        String keyword = "bruce";
+        int pageNumber = 0;
+        int pageSize = 4;
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<User> page = userRepository.findAllByKeyword(keyword, pageable);
+        List<User> users = page.getContent();
+        users.forEach(user -> {
+            System.out.println(user);
+        });
+        assertThat(users.size()).isGreaterThan(0);
+    }
+
+    @Test
     public void testUpdateUser() {
         User userAlejandro = userRepository.findById(1).get();
         userAlejandro.setEnabled(true);

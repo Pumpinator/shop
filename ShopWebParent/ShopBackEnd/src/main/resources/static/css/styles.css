@@ -29,6 +29,12 @@ div > a:hover {
     text-decoration-thickness: 2px;
 }
 
+.input-group-text {
+    color: white;
+    background-color: var(--bs-dark) !Important;
+    border: solid 1px var(--bs-dark) !Important;
+}
+
 .pagination > li > a
 {
     background-color: #FFF;

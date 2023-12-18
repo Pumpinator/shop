@@ -43,11 +43,12 @@ public class UserService {
         return (List<Role>) roleRepository.findAll();
     }
 
-    public Page<User> paginate(int pageNumber, String sortField, String sortOrder ) {
+    public Page<User> paginate(int pageNumber, String sortField, String sortOrder, String keyword) {
         Sort sort = Sort.by(sortField);
         sort = sortOrder.equals("asc") ? sort.ascending() : sort.descending();
         int pageSize = 5;
-        Pageable pageable = PageRequest.of(pageNumber-1, pageSize, sort);
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, sort);
+        if (keyword != null) return userRepository.findAllByKeyword(keyword, pageable);
         return userRepository.findAll(pageable);
     }
 

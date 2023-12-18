@@ -29,12 +29,16 @@ public class UserController {
 
     @GetMapping("/users")
     public String getFirstPage(Model model) {
-        return paginate(1, "firstName", "asc", model);
+        return paginate(1, "firstName", "asc", null, model);
     }
 
     @GetMapping("/users/page/{pageNumber}")
-    public String paginate(@PathVariable(name = "pageNumber") int pageNumber, @Param("sortField") String sortField, @Param("sortOrder") String sortOrder, Model model) {
-        Page<User> userPage = userService.paginate(pageNumber, sortField, sortOrder);
+    public String paginate(@PathVariable(name = "pageNumber") int pageNumber,
+                           @Param("sortField") String sortField,
+                           @Param("sortOrder") String sortOrder,
+                           @Param("keyword") String keyword,
+                           Model model) {
+        Page<User> userPage = userService.paginate(pageNumber, sortField, sortOrder, keyword);
         List<User> users = userPage.getContent();
         long pageSize = userPage.getSize();
         long totalPages = userPage.getTotalPages();
@@ -52,6 +56,7 @@ public class UserController {
         model.addAttribute("sortField", sortField);
         model.addAttribute("sortOrder", sortOrder);
         model.addAttribute("reverseSortOrder", reverseSortOrder);
+        model.addAttribute("keyword", keyword);
         return "users";
     }
 
@@ -95,7 +100,7 @@ public class UserController {
             userService.save(user);
         }
         redirectAttributes.addFlashAttribute("message", "The user has been saved.");
-        return "redirect:/users";
+        return redirect(user);
     }
 
     @GetMapping("/users/{id}/enabled/{enabled}")
@@ -115,5 +120,10 @@ public class UserController {
             redirectAttributes.addFlashAttribute("message", exception.getMessage());
         }
         return "redirect:/users";
+    }
+
+    public String redirect(User user) {
+        String email = user.getEmail().split("@")[0];
+        return "redirect:/users/page/1?sortField=id&sortOrder=asc&keyword=" + email;
     }
 }
