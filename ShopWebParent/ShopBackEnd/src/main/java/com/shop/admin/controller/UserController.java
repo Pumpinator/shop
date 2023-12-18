@@ -3,10 +3,12 @@ package com.shop.admin.controller;
 import java.io.IOException;
 import java.util.List;
 
+import com.shop.admin.util.ExporterUtil;
 import com.shop.admin.util.FileUploadUtil;
 import com.shop.admin.exception.UserNotFoundException;
 import com.shop.admin.service.UserService;
 import com.shop.common.entity.Role;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
@@ -120,6 +122,27 @@ public class UserController {
             redirectAttributes.addFlashAttribute("message", exception.getMessage());
         }
         return "redirect:/users";
+    }
+
+    @GetMapping("/users/export/csv")
+    public void exportCSV(HttpServletResponse response) throws IOException {
+        List<User> users = userService.getAll();
+        ExporterUtil exporterUtil = new ExporterUtil();
+        exporterUtil.exportCSV(users, response);
+    }
+
+    @GetMapping("/users/export/excel")
+    public void exportExcel(HttpServletResponse response) throws IOException {
+        List<User> users = userService.getAll();
+        ExporterUtil exporterUtil = new ExporterUtil();
+        exporterUtil.exportExcel(users, response);
+    }
+
+    @GetMapping("/users/export/pdf")
+    public void exportPDF(HttpServletResponse response) throws IOException {
+        List<User> users = userService.getAll();
+        ExporterUtil exporterUtil = new ExporterUtil();
+        exporterUtil.exportPDF(users, response);
     }
 
     public String redirect(User user) {

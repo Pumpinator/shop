@@ -70,42 +70,59 @@
               onsubmit="return checkEmail(this)" th:action="@{/users/save}" th:object="${user}">
             <input type="hidden" th:field="*{id}">
             <div class="col-md-6">
-                <label class="form-label">First Name</label>
-                <input type="text" class="form-control" required minlength="2" maxlength="45" th:field="*{firstName}">
+                <label class="form-label w-100">
+                    First Name
+                    <input type="text" class="form-control" required minlength="2" maxlength="45"
+                           th:field="*{firstName}">
+                </label>
             </div>
             <div class="col-md-6">
-                <label class="form-label">Last Name</label>
-                <input type="text" class="form-control" required minlength="2" maxlength="45" th:field="*{lastName}">
+                <label class="form-label  w-100">
+                    Last Name
+                    <input type="text" class="form-control" required minlength="2" maxlength="45"
+                           th:field="*{lastName}">
+                </label>
             </div>
             <div class="col-md-6">
-                <label class="form-label">Email</label>
-                <input type="email" class="form-control" required minlength="8" maxlength="128" th:field="*{email}">
+                <label class="form-label w-100">
+                    Email
+                    <input type="email" class="form-control" required minlength="8" maxlength="128" th:field="*{email}">
+                </label>
             </div>
             <div class="col-md-6">
-                <label class="form-label">Password</label>
-                <input type="password" class="form-control" required minlength="4"
-                       maxlength="64" th:field="*{password}" th:if="${user.id == null}">
-                <input type="password" class="form-control" placeholder="Leave blank if not applicable." minlength="4"
-                       maxlength="64" th:field="*{password}" th:if="${user.id != null}">
+                <label class="form-label w-100">
+                    Password
+                    <input type="password" class="form-control" required minlength="4"
+                           maxlength="64" th:field="*{password}" th:if="${user.id == null}">
+                    <input type="password" class="form-control" placeholder="Leave blank if not applicable."
+                           minlength="4"
+                           maxlength="64" th:field="*{password}" th:if="${user.id != null}">
+                </label>
             </div>
             <div class="col-12">
                 <label class="form-label">Roles</label>
                 <th:block th:each="role : ${roles}">
                     <div class="form-check">
-                        <label class="form-check-label">[[${role.name}]]</label>
-                        <input type="checkbox" class="form-check-input" th:field="*{roles}" th:value="${role.id}">
-                        <small>- [[${role.description}]]</small>
+                        <label class="form-check-label">
+                            [[${role.name}]]
+                            <input type="checkbox" class="form-check-input" th:field="*{roles}" th:value="${role.id}">
+                            <small>- [[${role.description}]]</small>
+                        </label>
                     </div>
                 </th:block>
             </div>
             <div class="form-check col-12">
-                <label class="form-check-label">Enabled</label>
-                <input type="checkbox" class="form-check-input" th:field="*{enabled}">
+                <label class="form-check-label">
+                    Enabled
+                    <input type="checkbox" class="form-check-input" th:field="*{enabled}">
+                </label>
             </div>
             <div class="col-md-8">
                 <input type="hidden" th:field="*{photos}">
-                <label class="form-label">Photo</label>
-                <input type="file" class="form-control" id="imageInput" name="image" accept="image/png, image/jpeg">
+                <label class="form-label w-100">
+                    Photo
+                    <input type="file" class="form-control" id="imageInput" name="image" accept="image/png, image/jpeg">
+                </label>
             </div>
             <div class="col-md-4 text-center">
                 <img id="thumbnail" alt="Photo Preview" th:src="@{${user.photoPath}}">

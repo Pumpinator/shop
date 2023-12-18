@@ -5,6 +5,7 @@
 *.icon-dark {
     color: var(--bs-dark)
 }
+
 *.icon-dark:hover {
     color: var(--bs-secondary)
 }
@@ -29,14 +30,24 @@ div > a:hover {
     text-decoration-thickness: 2px;
 }
 
+.form-select-sm {
+    -webkit-appearance: none;
+    font-weight: bold;
+    appearance: none;
+    background-color: var(--bs-dark);
+    color: #FFF;
+    border: 1px solid var(--bs-dark);
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
 .input-group-text {
     color: white;
     background-color: var(--bs-dark) !Important;
     border: solid 1px var(--bs-dark) !Important;
 }
 
-.pagination > li > a
-{
+.pagination > li > a {
     background-color: #FFF;
     color: var(--bs-dark);
     border: #FFF;
@@ -55,21 +66,18 @@ div > a:hover {
 .pagination > li > a:focus,
 .pagination > li > a:hover,
 .pagination > li > span:focus,
-.pagination > li > span:hover
-{
+.pagination > li > span:hover {
     color: #FFF;
     background-color: var(--bs-secondary);
     border-color: var(--bs-secondary);
 }
 
-.pagination > .active > a:hover
-{
+.pagination > .active > a:hover {
     background-color: var(--bs-secondary) !Important;
     border: solid 1px var(--bs-secondary);
 }
 
-.pagination > .active > a
-{
+.pagination > .active > a {
     color: white;
     background-color: var(--bs-dark) !Important;
     border: solid 1px var(--bs-dark) !Important;
