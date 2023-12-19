@@ -21,13 +21,13 @@
 div > a {
     color: var(--bs-dark);
     font-weight: bold;
-    text-decoration-thickness: 2px;
+    text-decoration: none;
 }
 
 div > a:hover {
     color: var(--bs-secondary);
     font-weight: bold;
-    text-decoration-thickness: 2px;
+    text-decoration: none;
 }
 
 .form-select-sm {
@@ -45,6 +45,15 @@ div > a:hover {
     color: white;
     background-color: var(--bs-dark) !Important;
     border: solid 1px var(--bs-dark) !Important;
+}
+
+@media screen and (max-width: 768px) {
+    div.table-responsive {
+        display: none;
+    }
+    div.less-details {
+        display: block;
+    }
 }
 
 .pagination > li > a {
@@ -89,17 +98,17 @@ div > a:hover {
     border: solid 1px var(--bs-dark) !Important;
 }
 
-#thumbnail {
+.thumbnail {
     width: 150px;
     max-width: 150px;
     height: 200px;
     max-height: 200px;
 }
 
-#listThumbnail {
-    width: 45px;
-    max-width: 45px;
-    height: 60px;
-    max-height: 60px;
+.listThumbnail {
+    width: 60px;
+    max-width: 60px;
+    height: 80px;
+    max-height: 80px;
     border-radius: 50%;
 }

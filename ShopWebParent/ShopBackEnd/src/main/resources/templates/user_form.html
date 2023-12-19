@@ -102,7 +102,7 @@
             <div class="col-12">
                 <label class="form-label">Roles</label>
                 <th:block th:each="role : ${roles}">
-                    <div class="form-check">
+                    <div class="form-check d-sm-grid gap-3">
                         <label class="form-check-label">
                             [[${role.name}]]
                             <input type="checkbox" class="form-check-input" th:field="*{roles}" th:value="${role.id}">
@@ -125,9 +125,9 @@
                 </label>
             </div>
             <div class="col-md-4 text-center">
-                <img id="thumbnail" alt="Photo Preview" th:src="@{${user.photoPath}}">
+                <img class="thumbnail" alt="Photo Preview" th:src="@{${user.photoPath}}">
             </div>
-            <div class="col-12 text-center">
+            <div class="col-12 text-center p-3">
                 <button type="submit" class="btn btn-dark">Save</button>
                 <button type="button" class="btn btn-secondary" id="buttonCancel">Cancel</button>
             </div>

@@ -64,7 +64,10 @@
     </div>
     <div class="text-center">
         <h1>Manage Users</h1>
-        <a th:href="@{/users/create}">Create User</a>
+        <a class="icon-dark" title="Add User" th:href="@{/users/create}">
+            Add
+            <i class="fa-solid fa-user-plus"></i>
+        </a>
         &nbsp; | &nbsp;
         <select class="form-select-sm" onchange="exportTo(this);">
             <option value="0" selected>Export to...</option>
@@ -78,7 +81,7 @@
         [[${message}]]
     </div>
     <div>
-        <form class="row row-cols-lg-auto g-1" th:action="@{/users/page/1}">
+        <form class="row row-cols-lg-auto g-1 p-3" th:action="@{/users/page/1}">
             <div class="col-12">
                 <label class="visually-hidden">
                     Filter
@@ -92,7 +95,9 @@
                 </div>
             </div>
             <div class="col">
-                <button type="submit" class="btn btn-dark w-100" value="Search">Search</button>
+                <button type="submit" class="btn btn-dark w-100" value="Search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
             </div>
             <div class="col">
                 <button type="button" class="btn btn-secondary w-100" value="Clear" onclick="clearFilter();">Clear
@@ -118,13 +123,13 @@
             <tbody class="table-group-divider">
             <tr th:each="user : ${users}">
                 <td class="text-center">
-                    <img id="listThumbnail" alt="Photo Preview" th:src="@{${user.photoPath}}">
+                    <img class="listThumbnail" alt="Photo Preview" th:src="@{${user.photoPath}}">
                 </td>
-                <td>[[${user.firstName}]] [[${user.lastName}]]</td>
+                <td>[[${user.fullName}]]</td>
                 <td>[[${user.email}]]</td>
                 <td>[[${user.roles}]]</td>
                 <td class="text-center">
-                    <a class="icon-dark link-enabled" th:fullName="${user.firstName + ' ' + user.lastName}"
+                    <a class="icon-dark link-enabled" th:fullName="${user.fullName}"
                        th:href="@{'/users/' + ${user.id} + '/enabled/' + ${!user.enabled} }">
                         <i class="fa-solid fa-circle-check fa-lg" th:if="${user.enabled == true}"
                            title="Disable User"></i>
@@ -133,12 +138,12 @@
                     </a>
                 </td>
                 <td>
-                    <a class="icon-dark" th:href="@{'/users/update/' + ${user.id}}" title="Update User">
+                    <a class="icon-dark" title="Update User" th:href="@{'/users/update/' + ${user.id}}">
                         <i class="fa-solid fa-user-pen fa-lg"></i>
                     </a>
                     &nbsp;
                     <a class="icon-dark link-delete" title="Delete User" th:href="@{'/users/delete/' + ${user.id}}"
-                       th:fullName="${user.firstName + ' ' + user.lastName}">
+                       th:fullName="${user.fullName}">
                         <i class="fa-solid fa-user-minus fa-lg"></i>
                     </a>
                 </td>
@@ -146,7 +151,38 @@
             </tbody>
         </table>
     </div>
-    <div class="row">
+    <div class="less-details d-lg-none d-md-none">
+        <div class="row m-1" th:each="user : ${users}">
+            <div class="col-4 text-center">
+                <img class="listThumbnail" alt="Photo Preview" th:src="@{${user.photoPath}}">
+            </div>
+            <div class="col-8">
+                <div>[[${user.fullName}]]</div>
+                <div>[[${user.email}]]</div>
+                <div>[[${user.roles}]]</div>
+                <div>
+                    <a class="icon-dark link-enabled" th:fullName="${user.fullName}"
+                       th:href="@{'/users/' + ${user.id} + '/enabled/' + ${!user.enabled} }">
+                        <i class="fa-solid fa-circle-check fa-lg" th:if="${user.enabled == true}"
+                           title="Disable User"></i>
+                        <i class="fa-solid fa-circle-xmark fa-lg" th:if="${user.enabled == false}"
+                           title="Enable User"></i>
+                    </a>
+                    &nbsp;
+                    <a class="icon-dark" title="Update User" th:href="@{'/users/update/' + ${user.id}}">
+                        <i class="fa-solid fa-user-pen fa-lg"></i>
+                    </a>
+                    &nbsp;
+                    <a class="icon-dark link-delete" title="Delete User" th:href="@{'/users/delete/' + ${user.id}}"
+                       th:fullName="${user.fullName}">
+                        <i class="fa-solid fa-user-minus fa-lg"></i>
+                    </a>
+                </div>
+            </div>
+            <div>&nbsp;</div>
+        </div>
+    </div>
+    <div class="row p-3">
         <div class="col text-lg-start text-center">
             <span th:if="${totalCount > 0}">Showing [[${startCount}]] to [[${endCount}]] of [[${totalCount}]] users</span>
             <span th:unless="${totalCount > 0}">No users found</span>
