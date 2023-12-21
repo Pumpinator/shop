@@ -54,6 +54,9 @@ div > a:hover {
     div.less-details {
         display: block;
     }
+    li > svg {
+        display: none;
+    }
 }
 
 .pagination > li > a {
@@ -111,4 +114,9 @@ div > a:hover {
     height: 80px;
     max-height: 80px;
     border-radius: 50%;
+}
+
+.form-login {
+    max-width: 350px;
+    margin: 0 auto;
 }

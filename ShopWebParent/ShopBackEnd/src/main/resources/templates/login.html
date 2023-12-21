@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minium-scale=1.0">
+    <title>Login | Shop Admin</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container-fluid text-center">
+    <div class="p-3">
+        <img th:src="@{/img/ShopAdminBig.png}">
+    </div>
+    <form class="form-login p-3" method="post" th:action="@{/login}">
+        <div class="border border-dark rounded p-3">
+            <p>Access to Shop Control Panel</p>
+            <p>
+                <input class="form-control" type="email" name="email" placeholder="Email" required minlength="8"
+                       maxlength="128">
+            </p>
+            <p>
+                <input class="form-control" type="password" name="password" placeholder="Password" required
+                       minlength="4" maxlength="64">
+            </p>
+            <p>
+                <input class="btn btn-dark" type="submit" value="Login">
+            </p>
+            <div th:if="${param.error}">
+                <p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]], sorry</p>
+            </div>
+            <div th:if="${param.logout}">
+                <p class="text-warning">Logged out.</p>
+            </div>
+        </div>
+    </form>
+    <div>
+        <p>Admin Control Panel - Copyright &copy; Shop</p>
+    </div>
+</div>
+</body>
+</html>

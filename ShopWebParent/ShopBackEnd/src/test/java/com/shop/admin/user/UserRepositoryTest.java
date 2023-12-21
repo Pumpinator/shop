@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 
 import com.shop.common.entity.Role;
@@ -30,21 +31,41 @@ public class UserRepositoryTest {
 
     @Test
     public void testCreateUserWithOneRole() {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         Role roleAdmin = testEntityManager.find(Role.class, 1);
-        User userAlejandro = new User("eviladc@hotmail.com", "alejandro2023", "Alejandro", "Delgado Cardona");
+        User userAlejandro = new User("alejandrodcardona5@hotmail.com", bCryptPasswordEncoder.encode("alejandro2023"), "Alejandro", "Delgado Cardona");
         userAlejandro.addRole(roleAdmin);
+        userAlejandro.setPhotos("alejandro.jpg");
         User savedUser = userRepository.save(userAlejandro);
         assertThat(savedUser.getId()).isGreaterThan(0);
     }
 
     @Test
+    public void testCreateTwoUsers() {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        Role roleAdmin = testEntityManager.find(Role.class, 1);
+        User userAlejandra = new User("aledelrociocar@hotmail.com", bCryptPasswordEncoder.encode("alejandra2023"), "Alejandra Del Rocío", "Cardona Guerra");
+        User userMelissa = new User("mely.dcardona@gmail.com", bCryptPasswordEncoder.encode("melissa2023"), "Melissa", "Delgado Cardona");
+        userAlejandra.addRole(roleAdmin);
+        userMelissa.addRole(roleAdmin);
+        userAlejandra.setPhotos("alejandra.jpg");
+        userMelissa.setPhotos("melissa.jpg");
+        User savedUserAlejandra = userRepository.save(userAlejandra);
+        User savedUserMelissa = userRepository.save(userMelissa);
+        assertThat(savedUserAlejandra.getId()).isGreaterThan(0);
+        assertThat(savedUserMelissa.getId()).isGreaterThan(0);
+    }
+
+    @Test
     public void testCreateUserWithTwoRoles() {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         Role roleEditor = new Role(3);
         Role roleAssistant = new Role(5);
-        User userAlejandra = new User("aledelrociocar@hotmail.com", "alejandra2023", "Alejandra Del Rocío", "Cardona Guerra");
-        userAlejandra.addRole(roleEditor);
-        userAlejandra.addRole(roleAssistant);
-        User savedUser = userRepository.save(userAlejandra);
+        User userPaulina = new User("paulinaduran3e@gmail.com", bCryptPasswordEncoder.encode("paulina2023"), "Ana Paulina", "Durán Martínez");
+        userPaulina.addRole(roleEditor);
+        userPaulina.addRole(roleAssistant);
+        userPaulina.setPhotos("paulina.jpg");
+        User savedUser = userRepository.save(userPaulina);
         assertThat(savedUser.getId()).isGreaterThan(0);
     }
 
@@ -145,5 +166,17 @@ public class UserRepositoryTest {
         Integer id = 1;
         Long count = userRepository.countUserById(id);
         assertThat(count).isNotNull().isGreaterThan(0);
+    }
+
+    @Test
+    public void testEncodeUserPassword() {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        User user = userRepository.findById(3).get();
+        String rawPassword = user.getPassword();
+        String encodedPassword = bCryptPasswordEncoder.encode(rawPassword);
+        userRepository.save(user);
+        System.out.println(encodedPassword);
+        boolean matches = bCryptPasswordEncoder.matches(rawPassword, encodedPassword);
+        assertThat(matches).isTrue();
     }
 }
