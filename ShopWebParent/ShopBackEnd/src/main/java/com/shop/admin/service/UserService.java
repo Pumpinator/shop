@@ -39,6 +39,10 @@ public class UserService {
         }
     }
 
+    public User getByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
+
     public List<User> getAll() {
         return (List<User>) userRepository.findAll(Sort.by("firstName").ascending());
     }
@@ -73,6 +77,18 @@ public class UserService {
 
     public void updateStatus(Integer id, boolean enabled) {
         userRepository.updateUserStatus(id, enabled);
+    }
+
+    public User updateAccount(User user) {
+        User savedUser = userRepository.findById(user.getId()).get();
+        if(!user.getPassword().isEmpty()) {
+            savedUser.setPassword(user.getPassword());
+            encodePassword(savedUser);
+        }
+        if(user.getPhotos() != null) savedUser.setPhotos(user.getPhotos());
+        savedUser.setFirstName(user.getFirstName());
+        savedUser.setLastName(user.getLastName());
+        return userRepository.save(savedUser);
     }
 
     public void delete(Integer id) throws UserNotFoundException {

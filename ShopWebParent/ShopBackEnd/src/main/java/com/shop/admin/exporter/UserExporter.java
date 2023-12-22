@@ -1,9 +1,10 @@
-package com.shop.admin.util;
+package com.shop.admin.exporter;
 
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfTable;
 import com.lowagie.text.pdf.PdfWriter;
 import com.shop.common.entity.User;
 import jakarta.servlet.ServletOutputStream;
@@ -20,7 +21,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class ExporterUtil {
+public class UserExporter implements Exporter<User>{
+    @Override
     public void exportCSV(List<User> users, HttpServletResponse response) throws IOException {
         setResponseHeader(response, "text/csv", ".csv");
         ICsvBeanWriter csvBeanWriter = new CsvBeanWriter(
@@ -35,17 +37,18 @@ public class ExporterUtil {
         csvBeanWriter.close();
     }
 
-
+    @Override
     public void exportExcel(List<User> users, HttpServletResponse response) throws IOException {
         setResponseHeader(response, "application/octect-stream", ".xlsx");
-        XSSFWorkbook workbook = createExcelWorkbook("Users");
-        createExcelData(workbook, users);
+        XSSFWorkbook workbook = createExcelWorkbook();
+        createExcelData(users, workbook);
         ServletOutputStream servletOutputStream = response.getOutputStream();
         workbook.write(servletOutputStream);
         workbook.close();
         servletOutputStream.close();
     }
 
+    @Override
     public void exportPDF(List<User> users, HttpServletResponse response) throws IOException {
         setResponseHeader(response, "application/pdf", ".pdf");
         Document document = new Document(PageSize.A4);
@@ -61,12 +64,13 @@ public class ExporterUtil {
         table.setSpacingBefore(10);
         table.setWidths(new float[]{1.2f, 3.0f, 3.0f, 3.5f, 3.0f, 1.7f});
         createPdfTable(table);
-        createPdfData(table, users);
+        createPdfData(users, table);
         document.add(table);
         document.close();
     }
 
-    private void createPdfData(PdfPTable table, List<User> users) {
+    @Override
+    public void createPdfData(List<User> users, PdfPTable table) {
         for (User user : users) {
             table.getDefaultCell().setBorderWidth(0);
             table.addCell(String.valueOf(user.getId()));
@@ -78,7 +82,8 @@ public class ExporterUtil {
         }
     }
 
-    private void createPdfTable(PdfPTable table) {
+    @Override
+    public void createPdfTable(PdfPTable table) {
         PdfPCell cell = new PdfPCell();
         cell.setBorderWidth(0);
         cell.setBackgroundColor(Color.GRAY);
@@ -99,27 +104,27 @@ public class ExporterUtil {
         table.addCell(cell);
     }
 
-    private XSSFWorkbook createExcelWorkbook(String sheetName) {
+    @Override
+    public XSSFWorkbook createExcelWorkbook() {
         XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet sheet = workbook.createSheet(sheetName);
+        XSSFSheet sheet = workbook.createSheet("Users");
         XSSFRow row = sheet.createRow(0);
         XSSFCellStyle cellStyle = workbook.createCellStyle();
         XSSFFont font = workbook.createFont();
         font.setBold(true);
         font.setFontHeight(14);
         cellStyle.setFont(font);
-        if (sheetName == "Users") {
-            createExcelCell(row, 0, "Id", cellStyle);
-            createExcelCell(row, 1, "First Name", cellStyle);
-            createExcelCell(row, 2, "Last Name", cellStyle);
-            createExcelCell(row, 3, "Email", cellStyle);
-            createExcelCell(row, 4, "Roles", cellStyle);
-            createExcelCell(row, 5, "Enabled", cellStyle);
-        }
+        createExcelCell(row, 0, "Id", cellStyle);
+        createExcelCell(row, 1, "First Name", cellStyle);
+        createExcelCell(row, 2, "Last Name", cellStyle);
+        createExcelCell(row, 3, "Email", cellStyle);
+        createExcelCell(row, 4, "Roles", cellStyle);
+        createExcelCell(row, 5, "Enabled", cellStyle);
         return workbook;
     }
 
-    private void createExcelCell(XSSFRow row, int columnIndex, Object value, XSSFCellStyle cellStyle) {
+    @Override
+    public void createExcelCell(XSSFRow row, int columnIndex, Object value, XSSFCellStyle cellStyle) {
         XSSFCell cell = row.createCell(columnIndex);
         cell.getSheet().autoSizeColumn(columnIndex);
         if (value instanceof Integer) {
@@ -132,7 +137,8 @@ public class ExporterUtil {
         cell.setCellStyle(cellStyle);
     }
 
-    private void createExcelData(XSSFWorkbook workbook, List<User> users) {
+    @Override
+    public void createExcelData(List<User> users, XSSFWorkbook workbook) {
         int rowIndex = 1;
         XSSFSheet sheet = workbook.getSheet("Users");
         XSSFCellStyle cellStyle = workbook.createCellStyle();
@@ -152,7 +158,8 @@ public class ExporterUtil {
         }
     }
 
-    private void setResponseHeader(HttpServletResponse response, String contentType, String extension) {
+    @Override
+    public void setResponseHeader(HttpServletResponse response, String contentType, String extension) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         String timeStamp = dateFormat.format(new Date());
         String fileName = "users_" + timeStamp + extension;

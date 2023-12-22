@@ -54,13 +54,15 @@ public class WebSecurityConfiguration {
         http.rememberMe(httpSecurityRememberMeConfigurer -> {
             httpSecurityRememberMeConfigurer
                     .key("AbcdEfghIjklmNopQrsTuvXyz_0123456789");
+            httpSecurityRememberMeConfigurer.tokenValiditySeconds(7 * 24 * 60 * 60);
         });
         http.logout(httpSecurityLogoutConfigurer -> {
             httpSecurityLogoutConfigurer
                     .permitAll();
         });
         http.headers(httpSecurityHeadersConfigurer -> {
-            httpSecurityHeadersConfigurer.frameOptions(frameOptionsConfig -> frameOptionsConfig.sameOrigin());
+            httpSecurityHeadersConfigurer
+                    .frameOptions(frameOptionsConfig -> frameOptionsConfig.sameOrigin());
         });
         http.authenticationProvider(authenticationProvider());
         return http.build();

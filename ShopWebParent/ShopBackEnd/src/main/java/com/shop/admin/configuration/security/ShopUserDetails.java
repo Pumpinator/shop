@@ -23,7 +23,7 @@ public class ShopUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<Role> roles = user.getRoles();
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        for(Role role : roles) {
+        for (Role role : roles) {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         }
         return authorities;
@@ -57,6 +57,14 @@ public class ShopUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return user.isEnabled();
+    }
+
+    public void setFirstName(String firstName) {
+        this.user.setFirstName(firstName);
+    }
+
+    public void setLastName(String lastName) {
+        this.user.setLastName(lastName);
     }
 
     public String getFullName() {

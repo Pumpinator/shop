@@ -3,7 +3,8 @@ package com.shop.admin.controller;
 import java.io.IOException;
 import java.util.List;
 
-import com.shop.admin.util.ExporterUtil;
+import com.shop.admin.exporter.Exporter;
+import com.shop.admin.exporter.UserExporter;
 import com.shop.admin.util.FileUploadUtil;
 import com.shop.admin.exception.UserNotFoundException;
 import com.shop.admin.service.UserService;
@@ -127,22 +128,22 @@ public class UserController {
     @GetMapping("/users/export/csv")
     public void exportCSV(HttpServletResponse response) throws IOException {
         List<User> users = userService.getAll();
-        ExporterUtil exporterUtil = new ExporterUtil();
-        exporterUtil.exportCSV(users, response);
+        Exporter exporter = new UserExporter();
+        exporter.exportCSV(users, response);
     }
 
     @GetMapping("/users/export/excel")
     public void exportExcel(HttpServletResponse response) throws IOException {
         List<User> users = userService.getAll();
-        ExporterUtil exporterUtil = new ExporterUtil();
-        exporterUtil.exportExcel(users, response);
+        Exporter exporter = new UserExporter();
+        exporter.exportExcel(users, response);
     }
 
     @GetMapping("/users/export/pdf")
     public void exportPDF(HttpServletResponse response) throws IOException {
         List<User> users = userService.getAll();
-        ExporterUtil exporterUtil = new ExporterUtil();
-        exporterUtil.exportPDF(users, response);
+        Exporter exporter = new UserExporter();
+        exporter.exportPDF(users, response);
     }
 
     public String redirect(User user) {

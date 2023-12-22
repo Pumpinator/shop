@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minium-scale=1.0">
-    <title>Login | Shop Admin</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
-</head>
+<head th:replace="~{fragments :: head('Home')}"></head>
 <body>
 <div class="container-fluid text-center">
     <div class="p-3">
@@ -24,7 +18,7 @@
                        minlength="4" maxlength="64">
             </p>
             <p>
-                <input class="btn btn-dark" type="submit" value="Login">
+                <input type="checkbox" name="remember-me">&nbsp;Remember Me
             </p>
             <div th:if="${param.error}">
                 <p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]], sorry</p>
@@ -32,6 +26,9 @@
             <div th:if="${param.logout}">
                 <p class="text-warning">Logged out.</p>
             </div>
+            <p>
+                <button class="btn btn-dark" type="submit" value="Login">Login</button>
+            </p>
         </div>
     </form>
     <div>
