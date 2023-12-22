@@ -17,7 +17,7 @@
             <option th:href="@{/users/export/excel}">Excel</option>
             <option th:href="@{/users/export/pdf}">PDF</option>
         </select>
-        <a th:href="@{/users/export/csv}"></a>
+        <a th:href="@{/templates/user/export/csv}"></a>
     </div>
     <div th:if="${message != null}" class="mt-3 alert alert-dark text-center">
         [[${message}]]

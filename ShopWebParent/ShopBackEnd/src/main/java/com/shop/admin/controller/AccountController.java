@@ -28,7 +28,7 @@ public class AccountController {
         User user = userService.getByEmail(email);
         model.addAttribute("user", user);
         model.addAttribute("pageTitle", "Account");
-        return "account_form";
+        return "user/account_form";
     }
 
     @PostMapping("/account/update")
