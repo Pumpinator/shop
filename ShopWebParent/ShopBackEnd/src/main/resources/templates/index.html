@@ -8,11 +8,14 @@
     <div th:replace="~{navigation :: nav}"></div>
     <div class="text-center">
         <h1 class="text-center">Shop Admin Control Panel</h1>
+        <p>
+            Welcome
+            <a class="link-dark" th:href="@{/account}" sec:authentication="principal.fullName"></a>
+            <br>
+            <span sec:authentication="principal.authorities"></span>
+        </p>
     </div>
     <div th:replace="~{fragments :: footer}"></div>
 </div>
-<script type="text/javascript">
-
-</script>
 </body>
 </html>

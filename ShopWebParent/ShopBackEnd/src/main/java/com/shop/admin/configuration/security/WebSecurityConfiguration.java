@@ -42,6 +42,16 @@ public class WebSecurityConfiguration {
                     .requestMatchers("/img/**", "/css/**", "/js/**", "/webjars/**")
                     .permitAll();
             authorizationManagerRequestMatcherRegistry
+                    .requestMatchers("/users/**", "/settings/**")
+                    .hasAuthority("Admin")
+                    .requestMatchers("/categories/**", "/brands/**", "/articles/**", "/menus/**")
+                    .hasAnyAuthority("Admin", "Editor")
+                    .requestMatchers("/products/**")
+                    .hasAnyAuthority("Admin", "Salesperson", "Editor", "Shipper")
+                    .requestMatchers("/customers/**", "/shipping/**", "/reports/**")
+                    .hasAnyAuthority("Admin", "Salesperson")
+                    .requestMatchers("/orders/**")
+                    .hasAnyAuthority("Admin", "Salesperson", "Shipper")
                     .anyRequest()
                     .authenticated();
         });

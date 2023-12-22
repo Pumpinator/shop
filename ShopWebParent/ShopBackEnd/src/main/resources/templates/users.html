@@ -6,9 +6,9 @@
     <div th:replace="~{navigation :: nav}"></div>
     <div class="text-center">
         <h1>Manage Users</h1>
-        <a class="icon-dark" title="Add User" th:href="@{/users/create}">
+        <a class="link-dark" title="Add User" th:href="@{/users/create}">
             Add
-            <i class="fa-solid fa-user-plus"></i>
+            <i class="fa-solid fa-user-plus icon-dark"></i>
         </a>
         &nbsp; | &nbsp;
         <select class="form-select-sm" onchange="exportTo(this);">

@@ -18,16 +18,20 @@
     color: var(--bs-dark)
 }
 
-div > a {
+.link-dark {
     color: var(--bs-dark);
     font-weight: bold;
     text-decoration: none;
 }
 
-div > a:hover {
+.link-dark:hover {
     color: var(--bs-secondary);
     font-weight: bold;
     text-decoration: none;
+}
+
+.dropdown-item:active {
+    background-color: var(--bs-secondary);
 }
 
 .form-select-sm {
