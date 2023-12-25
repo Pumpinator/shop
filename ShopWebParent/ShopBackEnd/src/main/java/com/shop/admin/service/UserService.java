@@ -1,6 +1,5 @@
 package com.shop.admin.service;
 
-import com.shop.admin.configuration.security.ShopUserDetails;
 import com.shop.admin.exception.UserNotFoundException;
 import com.shop.admin.repository.RoleRepository;
 import com.shop.admin.repository.UserRepository;
@@ -11,9 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -85,7 +81,7 @@ public class UserService {
             savedUser.setPassword(user.getPassword());
             encodePassword(savedUser);
         }
-        if(user.getPhotos() != null) savedUser.setPhotos(user.getPhotos());
+        if(user.getPhoto() != null) savedUser.setPhoto(user.getPhoto());
         savedUser.setFirstName(user.getFirstName());
         savedUser.setLastName(user.getLastName());
         return userRepository.save(savedUser);

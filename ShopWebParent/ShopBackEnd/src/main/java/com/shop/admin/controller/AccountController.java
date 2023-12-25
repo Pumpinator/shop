@@ -35,13 +35,13 @@ public class AccountController {
     public String update(User user, RedirectAttributes redirectAttributes, @AuthenticationPrincipal ShopUserDetails userDetails, @RequestParam("image") MultipartFile multipartFile) throws IOException {
         if (!multipartFile.isEmpty()) {
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-            user.setPhotos(fileName);
+            user.setPhoto(fileName);
             User savedUser = userService.updateAccount(user);
             String directory = "user-photos/" + savedUser.getId();
             FileUploadUtil.cleanDirectory(directory);
             FileUploadUtil.saveFile(directory, fileName, multipartFile);
         } else {
-            if (user.getPhotos().isEmpty()) user.setPhotos(null);
+            if (user.getPhoto().isEmpty()) user.setPhoto(null);
             userService.updateAccount(user);
         }
         userDetails.setFirstName(user.getFirstName());

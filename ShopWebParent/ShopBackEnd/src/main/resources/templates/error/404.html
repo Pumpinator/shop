@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org"
+      xmlns:sec="http://thymeleaf.org/thymeleaf-extras-springsecurity6" xmlns="http://www.w3.org/1999/html"
+      lang="en">
+<head th:replace="~{fragments :: head('Error')}"></head>
+<body>
+<div class="container-fluid">
+    <div class="text-center p-3">
+        <img th:src="@{/img/ShopError.png}" alt="">
+        <h1>404.</h1>
+        <small>That is an error.</small>
+        <p>The requested URL was not found on this server.</p>
+    </div>
+    <div th:replace="~{fragments :: footer}"></div>
+</div>
+</body>
+</html>

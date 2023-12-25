@@ -24,7 +24,7 @@ public class User {
     @Column(name = "last_name", length = 45, nullable = false)
     private String lastName;
     @Column(length = 64)
-    private String photos;
+    private String photo;
     private boolean enabled;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -48,7 +48,7 @@ public class User {
 
     @Transient
     public String getPhotoPath() {
-        if (id == null || photos == null) return "/img/default-user.png";
-        return "/user-photos/" + this.id + "/" + this.photos;
+        if (id == null || photo == null) return "/img/default-user.png";
+        return "/user-photos/" + this.id + "/" + this.photo;
     }
 }

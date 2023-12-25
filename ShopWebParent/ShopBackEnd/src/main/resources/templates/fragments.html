@@ -18,7 +18,7 @@
 <div th:fragment="footer" class="text-center">
     <p>Admin Control Panel - Copyright &copy; Shop</p>
 </div>
-<th scope="col" th:fragment="column_link(fieldName, columnLabel)">
+<th scope="col" th:fragment="column_link(fieldName, columnLabel)" th:class="${columnLabel == 'Enabled' ? 'text-center' : ''}">
     <a th:href="@{'/users/page/' + ${currentPage} + '?sortField=' + ${fieldName} + '&sortOrder=' + ${sortField != fieldName ? sortOrder : reverseSortOrder} + ${keyword != null ? '&keyword=' + keyword : ''}}">
         [[${columnLabel}]]
     </a>

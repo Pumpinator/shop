@@ -93,13 +93,13 @@ public class UserController {
     public String save(User user, RedirectAttributes redirectAttributes, @RequestParam("image") MultipartFile multipartFile) throws IOException {
         if (!multipartFile.isEmpty()) {
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-            user.setPhotos(fileName);
+            user.setPhoto(fileName);
             User savedUser = userService.save(user);
             String directory = "user-photos/" + savedUser.getId();
             FileUploadUtil.cleanDirectory(directory);
             FileUploadUtil.saveFile(directory, fileName, multipartFile);
         } else {
-            if (user.getPhotos().isEmpty()) user.setPhotos(null);
+            if (user.getPhoto().isEmpty()) user.setPhoto(null);
             userService.save(user);
         }
         redirectAttributes.addFlashAttribute("message", "The user has been saved.");

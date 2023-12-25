@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org"
+      xmlns:sec="http://thymeleaf.org/thymeleaf-extras-springsecurity6"
+      lang="en">
+<head th:replace="~{fragments :: head('Error')}"></head>
+<body>
+<div class="container-fluid">
+    <div class="text-center p-3">
+        <img th:src="@{/img/ShopError.png}" alt="">
+        <h1>500.</h1>
+        <small>That is an error.</small>
+        <p>The server encountered an error and could not complete your request.</h2>
+    </div>
+    <div th:replace="~{fragments :: footer}"></div>
+</div>
+</body>
+</html>

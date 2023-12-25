@@ -35,7 +35,7 @@ public class UserRepositoryTest {
         Role roleAdmin = testEntityManager.find(Role.class, 1);
         User userAlejandro = new User("alejandrodcardona5@hotmail.com", bCryptPasswordEncoder.encode("alejandro2023"), "Alejandro", "Delgado Cardona");
         userAlejandro.addRole(roleAdmin);
-        userAlejandro.setPhotos("alejandro.jpg");
+        userAlejandro.setPhoto("alejandro.jpg");
         User savedUser = userRepository.save(userAlejandro);
         assertThat(savedUser.getId()).isGreaterThan(0);
     }
@@ -48,8 +48,8 @@ public class UserRepositoryTest {
         User userMelissa = new User("mely.dcardona@gmail.com", bCryptPasswordEncoder.encode("melissa2023"), "Melissa", "Delgado Cardona");
         userAlejandra.addRole(roleAdmin);
         userMelissa.addRole(roleAdmin);
-        userAlejandra.setPhotos("alejandra.jpg");
-        userMelissa.setPhotos("melissa.jpg");
+        userAlejandra.setPhoto("alejandra.jpg");
+        userMelissa.setPhoto("melissa.jpg");
         User savedUserAlejandra = userRepository.save(userAlejandra);
         User savedUserMelissa = userRepository.save(userMelissa);
         assertThat(savedUserAlejandra.getId()).isGreaterThan(0);
@@ -64,7 +64,7 @@ public class UserRepositoryTest {
         User userPaulina = new User("paulinaduran3e@gmail.com", bCryptPasswordEncoder.encode("paulina2023"), "Ana Paulina", "Durán Martínez");
         userPaulina.addRole(roleEditor);
         userPaulina.addRole(roleAssistant);
-        userPaulina.setPhotos("paulina.jpg");
+        userPaulina.setPhoto("paulina.jpg");
         User savedUser = userRepository.save(userPaulina);
         assertThat(savedUser.getId()).isGreaterThan(0);
     }
