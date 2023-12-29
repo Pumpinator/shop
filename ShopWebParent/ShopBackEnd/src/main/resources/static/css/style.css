@@ -118,7 +118,7 @@
     max-width: 60px;
     height: 80px;
     max-height: 80px;
-    border-radius: 50%;
+    border-radius: 10%;
 }
 
 .form-login {
