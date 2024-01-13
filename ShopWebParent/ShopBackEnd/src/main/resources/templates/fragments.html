@@ -18,8 +18,8 @@
 <div th:fragment="footer" class="text-center">
     <p>Admin Control Panel - Copyright &copy; Shop</p>
 </div>
-<th scope="col" th:fragment="column_link(fieldName, columnLabel)" th:class="${columnLabel == 'Enabled' ? 'text-center' : ''}">
-    <a th:href="@{'/users/page/' + ${currentPage} + '?sortField=' + ${fieldName} + '&sortOrder=' + ${sortField != fieldName ? sortOrder : reverseSortOrder} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+<th scope="col" th:fragment="column_link(fieldName, columnLabel, path)" th:class="${columnLabel == 'Enabled' ? 'text-center' : ''}">
+    <a th:href="@{'/' + ${path} + '/page/' + ${currentPage} + '?sortField=' + ${fieldName} + '&sortOrder=' + ${sortField != fieldName ? sortOrder : reverseSortOrder} + ${keyword != null ? '&keyword=' + keyword : ''}}">
         [[${columnLabel}]]
     </a>
     <i th:if="${sortField == fieldName && fieldName != 'enabled'}"
@@ -27,8 +27,8 @@
     <i th:if="${sortField == fieldName && fieldName == 'enabled'}"
        th:class="${sortOrder == 'asc' ?  'fa-solid fa-arrow-up-wide-short' : 'fa-solid fa-arrow-down-wide-short'}"></i>
 </th>
-<a class="page-link" th:fragment="pagination_link(pageNumber, linkLabel)"
-   th:href="@{'/users/page/' + ${pageNumber} + '?sortField=' + ${sortField} + '&sortOrder=' + ${sortOrder} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+<a class="page-link" th:fragment="pagination_link(pageNumber, linkLabel, path)"
+   th:href="@{'/' + ${path} + '/page/' + ${pageNumber} + '?sortField=' + ${sortField} + '&sortOrder=' + ${sortOrder} + ${keyword != null ? '&keyword=' + keyword : ''}}">
     [[${linkLabel}]]
 </a>
 </body>

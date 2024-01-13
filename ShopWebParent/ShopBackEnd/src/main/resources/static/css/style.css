@@ -106,16 +106,12 @@
 }
 
 .thumbnail {
-    width: 150px;
-    max-width: 150px;
     height: 200px;
     max-height: 200px;
     border-radius: 10%;
 }
 
 .listThumbnail {
-    width: 60px;
-    max-width: 60px;
     height: 80px;
     max-height: 80px;
     border-radius: 10%;

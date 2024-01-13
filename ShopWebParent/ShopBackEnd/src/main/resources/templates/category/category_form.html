@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments :: head(${pageTitle} + ' | Manage Categories')}"></head>
+<body>
+<div class="container-fluid">
+    <div th:replace="~{navigation :: nav}"></div>
+    <div class="text-center">
+        <h1>[[${pageTitle}]]</h1>
+    </div>
+    <div class="container-fluid">
+        <form class="row g-3" method="post" enctype="multipart/form-data"
+              onsubmit="return checkEmail(this)" th:action="@{/categories/save}" th:object="${category}">
+            <input type="hidden" th:field="*{id}">
+            <div class="col-md-6">
+                <label class="form-label w-100">
+                    Name
+                    <input type="text" class="form-control" required minlength="3" maxlength="128"
+                           th:field="*{name}">
+                </label>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label  w-100">
+                    Alias
+                    <input type="text" class="form-control" required minlength="3" maxlength="64"
+                           th:field="*{alias}">
+                </label>
+            </div>
+            <div class="col-12">
+                <label class="form-label w-100">
+                    Parent
+                    <select class="form-select" th:field="*{parent}">
+                        <option value="0">No parent...</option>
+                        <th:block th:each="category : ${categories}">
+                            <option th:value="${categoryStat.index} + 1">[[${category.name}]]</option>
+                        </th:block>
+                    </select>
+                </label>
+            </div>
+            <div class="form-check col-12">
+                <label class="form-check-label">
+                    Enabled
+                    <input type="checkbox" class="form-check-input" th:field="*{enabled}">
+                </label>
+            </div>
+            <div class="col-md-8">
+                <input type="hidden" th:field="*{image}">
+                <label class="form-label w-100">
+                    Image
+                    <input type="file" class="form-control" id="imageInput" name="image" accept="image/png, image/jpeg">
+                </label>
+            </div>
+            <div class="col-md-4 text-center">
+                <img class="thumbnail" alt="Image Preview" th:src="@{${category.imagePath}}">
+            </div>
+            <div class="col-12 text-center p-3">
+                <button type="submit" class="btn btn-dark">Save</button>
+                <button type="button" class="btn btn-secondary" id="buttonCancel">Cancel</button>
+            </div>
+        </form>
+    </div>
+    <div th:replace="~{fragments :: footer}"></div>
+</div>
+<script type="text/javascript">
+    moduleUrl = "[[@{/categories}]]";
+</script>
+<script type="text/javascript" th:src="@{/js/script_form.js}"></script>
+</body>
+</html>

@@ -36,6 +36,7 @@ public class UserRepositoryTest {
         User userAlejandro = new User("alejandrodcardona5@hotmail.com", bCryptPasswordEncoder.encode("alejandro2023"), "Alejandro", "Delgado Cardona");
         userAlejandro.addRole(roleAdmin);
         userAlejandro.setPhoto("alejandro.jpg");
+        userAlejandro.setEnabled(true);
         User savedUser = userRepository.save(userAlejandro);
         assertThat(savedUser.getId()).isGreaterThan(0);
     }

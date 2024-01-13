@@ -17,7 +17,6 @@
             <option th:href="@{/users/export/excel}">Excel</option>
             <option th:href="@{/users/export/pdf}">PDF</option>
         </select>
-        <a th:href="@{/templates/user/export/csv}"></a>
     </div>
     <div th:if="${message != null}" class="mt-3 alert alert-dark text-center">
         [[${message}]]
@@ -52,12 +51,12 @@
             <thead>
             <tr>
                 <th scope="col"></th>
-                <th scope="col" th:replace="~{fragments :: column_link('firstName', 'Full Name')}">
+                <th scope="col" th:replace="~{fragments :: column_link('firstName', 'Full Name', 'users')}">
                 </th>
-                <th scope="col" th:replace="~{fragments :: column_link('email', 'Email')}">
+                <th scope="col" th:replace="~{fragments :: column_link('email', 'Email', 'users')}">
                 </th>
                 <th scope="col">Roles</th>
-                <th scope="col" th:replace="~{fragments :: column_link('enabled', 'Enabled')}">
+                <th scope="col" th:replace="~{fragments :: column_link('enabled', 'Enabled', 'users')}">
                 </th>
                 <th scope="col"></th>
             </tr>
@@ -121,7 +120,6 @@
                     </a>
                 </div>
             </div>
-            <div>&nbsp;</div>
         </div>
     </div>
     <div class="row p-3">
@@ -133,15 +131,15 @@
             <nav>
                 <ul class="pagination justify-content-lg-end justify-content-center">
                     <li class="page-item" th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">
-                        <a th:replace="~{fragments :: pagination_link(${currentPage - 1}, 'Previous')}"></a>
+                        <a th:replace="~{fragments :: pagination_link(${currentPage - 1}, 'Previous', 'users')}"></a>
                     </li>
                     <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, totalPages)}"
                         th:class="${currentPage != pageNumber ? 'page-item' : 'page-item active disabled'}">
-                        <a th:replace="~{fragments :: pagination_link(${pageNumber}, ${pageNumber})}"></a>
+                        <a th:replace="~{fragments :: pagination_link(${pageNumber}, ${pageNumber}, 'users')}"></a>
                     </li>
                     <li class="page-item"
                         th:classappend="${currentPage == totalPages} ? 'page-item disabled' : 'page-item'">
-                        <a th:replace="~{fragments :: pagination_link(${currentPage + 1}, 'Next')}"></a>
+                        <a th:replace="~{fragments :: pagination_link(${currentPage + 1}, 'Next', 'users')}"></a>
                     </li>
                 </ul>
             </nav>

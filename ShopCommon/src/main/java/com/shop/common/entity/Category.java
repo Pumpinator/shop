@@ -38,11 +38,17 @@ public class Category {
     public Category(String name) {
         this.name = name;
         this.alias = name;
-        this.image = "default-category.png";
+        this.image = "default-image.png";
     }
 
     public Category(String name, Category parent) {
         this(name);
         this.parent = parent;
+    }
+
+    @Transient
+    public String getImagePath() {
+        if (id == null || image == null) return "/img/default-image.png";
+        return "/categories-images/" + this.id + "/" + this.image;
     }
 }

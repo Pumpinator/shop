@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments :: head('Manage Categories')}"></head>
+<body>
+<div class="container-fluid">
+    <div th:replace="~{navigation :: nav}"></div>
+    <div class="text-center">
+        <h1>Manage Categories</h1>
+        <a class="link-dark" title="Add Category" th:href="@{/categories/create}">
+            Add
+            <i class="fa-regular fa-square-plus icon-dark"></i>
+        </a>
+        &nbsp; | &nbsp;
+        <select class="form-select-sm" onchange="exportTo(this);">
+            <option value="0" selected>Export to...</option>
+            <option th:href="@{/categories/export/csv}">CSV</option>
+            <option th:href="@{/categories/export/excel}">Excel</option>
+            <option th:href="@{/categories/export/pdf}">PDF</option>
+        </select>
+    </div>
+    <div th:if="${message != null}" class="mt-3 alert alert-dark text-center">
+        [[${message}]]
+    </div>
+    <div>
+        <form class="row row-cols-lg-auto g-1 p-3" th:action="@{/categories/page/1}">
+            <div class="col-12">
+                <label class="visually-hidden">
+                    Filter
+                </label>
+                <input type="hidden" name="sortField" th:value="${sortField}">
+                <input type="hidden" name="sortOrder" th:value="${sortOrder}">
+                <div class="input-group">
+                    <div class="input-group-text">Filter</div>
+                    <input class="form-control" type="search" name="keyword" placeholder="Keyword" required
+                           th:value="${keyword}">
+                </div>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-dark w-100" value="Search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-secondary w-100" value="Clear" onclick="clearFilter();">Clear
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col" th:replace="~{fragments :: column_link('name', 'Name', 'categories')}">
+                </th>
+                <th scope="col" th:replace="~{fragments :: column_link('alias', 'Alias', 'categories')}">
+                </th>
+                <th scope="col" th:replace="~{fragments :: column_link('enabled', 'Enabled', 'categories')}">
+                </th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody class="table-group-divider">
+            <tr th:each="category : ${categories}">
+                <td class="text-center">
+                    <img class="listThumbnail" alt="Photo Preview" th:src="@{${category.imagePath}}">
+                </td>
+                <td>[[${category.name}]]</td>
+                <td>[[${category.alias}]]</td>
+                <td class="text-center">
+                    <a class="icon-dark link-enabled"
+                       th:href="@{'/categories/' + ${category.id} + '/enabled/' + ${!category.enabled} }">
+                        <i class="fa-solid fa-circle-check fa-lg" th:if="${category.enabled == true}"
+                           title="Disable Category"></i>
+                        <i class="fa-solid fa-circle-xmark fa-lg" th:if="${category.enabled == false}"
+                           title="Enable Category"></i>
+                    </a>
+                </td>
+                <td>
+                    <a class="icon-dark" title="Update User" th:href="@{'/categories/update/' + ${category.id}}">
+                        <i class="fa-solid fa-file-pen fa-lg"></i>
+                    </a>
+                    &nbsp;
+                    <a class="icon-dark link-delete" title="Delete User"
+                       th:href="@{'/categories/delete/' + ${category.id}}">
+                        <i class="fa-solid fa-file-circle-minus fa-lg"></i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="less-details d-lg-none d-md-none">
+        <div class="row m-1" th:each="category : ${categories}">
+            <div class="col-4 text-center">
+                <img class="listThumbnail" alt="Photo Preview" th:src="@{${category.imagePath}}">
+            </div>
+            <div class="col-8">
+                <div>[[${category.name}]]</div>
+                <div>[[${category.alias}]]</div>
+                <div>
+                    <a class="icon-dark link-enabled"
+                       th:href="@{'/categories/' + ${category.id} + '/enabled/' + ${!category.enabled} }">
+                        <i class="fa-solid fa-circle-check fa-lg" th:if="${category.enabled == true}"
+                           title="Disable Category"></i>
+                        <i class="fa-solid fa-circle-xmark fa-lg" th:if="${category.enabled == false}"
+                           title="Enable Category"></i>
+                    </a>
+                    &nbsp;
+                    <a class="icon-dark" title="Update User" th:href="@{'/categories/update/' + ${category.id}}">
+                        <i class="fa-solid fa-file-pen fa-lg"></i>
+                    </a>
+                    &nbsp;
+                    <a class="icon-dark link-delete" title="Delete User"
+                       th:href="@{'/categories/delete/' + ${category.id}}">
+                        <i class="fa-solid fa-file-circle-minus fa-lg"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row p-3">
+        <div class="col text-lg-start text-center">
+            <span th:if="${totalCount > 0}">Showing [[${startCount}]] to [[${endCount}]] of [[${totalCount}]] categories</span>
+            <span th:unless="${totalCount > 0}">No categories found</span>
+        </div>
+        <div class="col" th:if="${totalPages > 1}">
+            <nav>
+                <ul class="pagination justify-content-lg-end justify-content-center">
+                    <li class="page-item" th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">
+                        <a th:replace="~{fragments :: pagination_link(${currentPage - 1}, 'Previous', 'categories')}"></a>
+                    </li>
+                    <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, totalPages)}"
+                        th:class="${currentPage != pageNumber ? 'page-item' : 'page-item active disabled'}">
+                        <a th:replace="~{fragments :: pagination_link(${pageNumber}, ${pageNumber}, 'categories')}"></a>
+                    </li>
+                    <li class="page-item"
+                        th:classappend="${currentPage == totalPages} ? 'page-item disabled' : 'page-item'">
+                        <a th:replace="~{fragments :: pagination_link(${currentPage + 1}, 'Next', 'categories')}"></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div th:replace="~{fragments :: footer}"></div>
+</div>
+<script>
+    function clearFilter() {
+        window.location = "[[@{/users}]]";
+    }
+</script>
+</body>
+</html>

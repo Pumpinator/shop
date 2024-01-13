@@ -22,27 +22,59 @@ public class CategoryRepositoryTest {
 
     @Test
     public void testCreateParentCategory() {
-        Category category = new Category("Grocery");
+        Category category = new Category();
         Category savedCategory = categoryRepository.save(category);
         assertThat(savedCategory.getId()).isGreaterThan(0);
     }
 
     @Test
     public void testCreateChildrenCategory() {
-        Category parentCategory = new Category(9);
-        Category childrenCategory = new Category("Instant Coffee", parentCategory);
+        Category parentCategory = new Category(16);
+        Category childrenCategory = new Category("Ground Coffee", parentCategory);
         Category savedCategory = categoryRepository.save(childrenCategory);
         assertThat(savedCategory.getId()).isGreaterThan(0);
     }
 
     @Test
-    public void testCreateTwoChildrenCategories() {
-        Category parentCategory = new Category(6);
-        Category childrenCategory1 = new Category("Breakfast & Cereal", parentCategory);
-        Category childrenCategory2 = new Category("Coffee", parentCategory);
-        Category childrenCategory3 = new Category("Meat & Seafood", parentCategory);
-        Category childrenCategory4 = new Category("Beverages", parentCategory);
-        categoryRepository.saveAll(List.of(childrenCategory1, childrenCategory2, childrenCategory3, childrenCategory4));
+    public void testCreateParentCategories() {
+        categoryRepository.saveAll(List.of(
+                        new Category("Food"),
+                        new Category("Electronics")
+                )
+        );
+    }
+
+    @Test
+    public void testCreateChildrenCategories() {
+        Category foodCategory = new Category(1);
+        Category electronicsCategory = new Category(2);
+        categoryRepository.saveAll(List.of(
+                        new Category("Fresh Produce", foodCategory),
+                        new Category("Meat & Seafood", foodCategory),
+                        new Category("Deli", foodCategory),
+                        new Category("Snacks", foodCategory),
+                        new Category("Pantry", foodCategory),
+                        new Category("Beverages", foodCategory),
+                        new Category("Breakfast & Cereal", foodCategory),
+                        new Category("Bread & Bakery", foodCategory),
+                        new Category("Dairy & Eggs", foodCategory),
+                        new Category("Candy", foodCategory),
+                        new Category("Baking", foodCategory),
+                        new Category("Alcohol", foodCategory),
+                        new Category("Frozen", foodCategory),
+                        new Category("Coffee", foodCategory),
+                        new Category("Tea", foodCategory),
+                        new Category("TV & Video", electronicsCategory),
+                        new Category("Computers & Tablets", electronicsCategory),
+                        new Category("Video Games", electronicsCategory),
+                        new Category("PC Gaming", electronicsCategory),
+                        new Category("Audio", electronicsCategory),
+                        new Category("Cell Phones", electronicsCategory),
+                        new Category("Wearable Technology", electronicsCategory),
+                        new Category("Smart Home & Wi-Fi", electronicsCategory),
+                        new Category("Cameras", electronicsCategory)
+                )
+        );
     }
 
     @Test
