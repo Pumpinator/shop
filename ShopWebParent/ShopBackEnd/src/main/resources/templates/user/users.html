@@ -70,7 +70,7 @@
                 <td>[[${user.email}]]</td>
                 <td>[[${user.roles}]]</td>
                 <td class="text-center">
-                    <a class="icon-dark link-enabled" th:fullName="${user.fullName}"
+                    <a class="icon-dark link-enabled text-decoration-none" th:fullName="${user.fullName}"
                        th:href="@{'/users/' + ${user.id} + '/enabled/' + ${!user.enabled} }">
                         <i class="fa-solid fa-circle-check fa-lg" th:if="${user.enabled == true}"
                            title="Disable User"></i>
@@ -79,7 +79,7 @@
                     </a>
                 </td>
                 <td>
-                    <a class="icon-dark" title="Update User" th:href="@{'/users/update/' + ${user.id}}">
+                    <a class="icon-dark text-decoration-none" title="Update User" th:href="@{'/users/update/' + ${user.id}}">
                         <i class="fa-solid fa-user-pen fa-lg"></i>
                     </a>
                     &nbsp;

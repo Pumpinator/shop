@@ -4,7 +4,6 @@ import com.shop.admin.exception.CategoryNotFoundException;
 import com.shop.admin.service.CategoryService;
 import com.shop.admin.util.FileUploadUtil;
 import com.shop.common.entity.Category;
-import com.shop.common.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
@@ -84,12 +83,12 @@ public class CategoryController {
     }
 
     @PostMapping("/categories/save")
-    public String save(Category category, RedirectAttributes redirectAttributes, @RequestParam("image")MultipartFile multipartFile) throws IOException {
+    public String save(Category category, RedirectAttributes redirectAttributes, @RequestParam("fileImage")MultipartFile multipartFile) throws IOException {
         if(!multipartFile.isEmpty()) {
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
             category.setImage(fileName);
             Category savedCategory = categoryService.save(category);
-            String directory = "category-photos/" + savedCategory.getId();
+            String directory = "../category-images/" + savedCategory.getId();
             FileUploadUtil.cleanDirectory(directory);
             FileUploadUtil.saveFile(directory, fileName, multipartFile);
         } else {

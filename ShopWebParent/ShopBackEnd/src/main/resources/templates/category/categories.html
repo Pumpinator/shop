@@ -68,7 +68,7 @@
                 <td>[[${category.name}]]</td>
                 <td>[[${category.alias}]]</td>
                 <td class="text-center">
-                    <a class="icon-dark link-enabled"
+                    <a class="icon-dark link-enabled text-decoration-none"
                        th:href="@{'/categories/' + ${category.id} + '/enabled/' + ${!category.enabled} }">
                         <i class="fa-solid fa-circle-check fa-lg" th:if="${category.enabled == true}"
                            title="Disable Category"></i>
@@ -77,13 +77,13 @@
                     </a>
                 </td>
                 <td>
-                    <a class="icon-dark" title="Update User" th:href="@{'/categories/update/' + ${category.id}}">
-                        <i class="fa-solid fa-file-pen fa-lg"></i>
+                    <a class="icon-dark text-decoration-none" title="Update Category" th:href="@{'/categories/update/' + ${category.id}}">
+                        <i class="fa-solid fa-pen-to-square fa-lg"></i>
                     </a>
                     &nbsp;
-                    <a class="icon-dark link-delete" title="Delete User"
+                    <a class="icon-dark link-delete text-decoration-none" title="Delete Category"
                        th:href="@{'/categories/delete/' + ${category.id}}">
-                        <i class="fa-solid fa-file-circle-minus fa-lg"></i>
+                        <i class="fa-solid fa-trash fa-lg"></i>
                     </a>
                 </td>
             </tr>
@@ -99,7 +99,7 @@
                 <div>[[${category.name}]]</div>
                 <div>[[${category.alias}]]</div>
                 <div>
-                    <a class="icon-dark link-enabled"
+                    <a class="icon-dark link-enabled text-decoration-none"
                        th:href="@{'/categories/' + ${category.id} + '/enabled/' + ${!category.enabled} }">
                         <i class="fa-solid fa-circle-check fa-lg" th:if="${category.enabled == true}"
                            title="Disable Category"></i>
@@ -107,11 +107,11 @@
                            title="Enable Category"></i>
                     </a>
                     &nbsp;
-                    <a class="icon-dark" title="Update User" th:href="@{'/categories/update/' + ${category.id}}">
+                    <a class="icon-dark text-decoration-none" title="Update User" th:href="@{'/categories/update/' + ${category.id}}">
                         <i class="fa-solid fa-file-pen fa-lg"></i>
                     </a>
                     &nbsp;
-                    <a class="icon-dark link-delete" title="Delete User"
+                    <a class="icon-dark link-delete text-decoration-none" title="Delete User"
                        th:href="@{'/categories/delete/' + ${category.id}}">
                         <i class="fa-solid fa-file-circle-minus fa-lg"></i>
                     </a>
@@ -146,7 +146,7 @@
 </div>
 <script>
     function clearFilter() {
-        window.location = "[[@{/users}]]";
+        window.location = "[[@{/categories}]]";
     }
 </script>
 </body>

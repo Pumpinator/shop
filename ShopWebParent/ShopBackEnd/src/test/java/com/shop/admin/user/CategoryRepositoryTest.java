@@ -38,8 +38,8 @@ public class CategoryRepositoryTest {
     @Test
     public void testCreateParentCategories() {
         categoryRepository.saveAll(List.of(
-                        new Category("Food"),
-                        new Category("Electronics")
+                        new Category("Food", null),
+                        new Category("Electronics", null)
                 )
         );
     }
@@ -96,6 +96,12 @@ public class CategoryRepositoryTest {
                 printChildrenCategory(category, 0);
             }
         }
+    }
+
+    @Test
+    public void testPrintRootCategories() {
+        List<Category> roots = categoryRepository.findRoots();
+        roots.forEach(category -> System.out.println(category.getName()));
     }
 
     private void printChildrenCategory(Category parent, int subLevel) {

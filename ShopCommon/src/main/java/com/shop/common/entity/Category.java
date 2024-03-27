@@ -35,20 +35,38 @@ public class Category {
         this.id = id;
     }
 
-    public Category(String name) {
+
+
+    public Category(String name, Category parent) {
+        this.id = id;
         this.name = name;
-        this.alias = name;
         this.image = "default-image.png";
     }
 
-    public Category(String name, Category parent) {
-        this(name);
-        this.parent = parent;
+    public static Category copy(Category category) {
+        Category copy = new Category();
+        copy.setId(category.getId());
+        copy.setName(category.getName());
+        copy.setAlias(category.getAlias());
+        copy.setImage(category.getImage());
+        copy.setEnabled(category.isEnabled());
+        return copy;
     }
+
+    public static Category copy(Category category, String name) {
+        Category copy = new Category();
+        copy.setId(category.getId());
+        copy.setName(name);
+        copy.setAlias(category.getAlias());
+        copy.setImage(category.getImage());
+        copy.setEnabled(category.isEnabled());
+        return copy;
+    }
+
 
     @Transient
     public String getImagePath() {
         if (id == null || image == null) return "/img/default-image.png";
-        return "/categories-images/" + this.id + "/" + this.image;
+        return "/category-images/" + this.id + "/" + this.image;
     }
 }

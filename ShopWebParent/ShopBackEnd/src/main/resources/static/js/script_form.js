@@ -4,7 +4,7 @@ $(document).ready(() => {
     });
 });
 
-$("#imageInput").change((event) => {
+$("#fileImage").change((event) => {
     imageInput = event.currentTarget;
     fileSize = imageInput.files[0].size;
     if (fileSize > 1048576) {

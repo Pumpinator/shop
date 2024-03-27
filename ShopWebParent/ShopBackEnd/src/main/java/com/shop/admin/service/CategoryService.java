@@ -5,16 +5,14 @@ import com.shop.admin.repository.CategoryRepository;
 import com.shop.common.entity.Category;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -22,38 +20,55 @@ public class CategoryService {
     @Autowired
     CategoryRepository categoryRepository;
 
+    private static final int PAGESIZE = 5;
+
     public List<Category> getAll() {
         Iterable<Category> categories = categoryRepository.findAll();
         List<Category> sortedCategories = new ArrayList<>();
         for (Category category : categories) {
             if (category.getParent() == null) {
-                listChildrenCategory(sortedCategories, category, 0);
+                listHierarchically(sortedCategories, category, 0);
             }
         }
         return sortedCategories;
     }
 
-    private void listChildrenCategory(List<Category> sortedCategories, Category parent, int subLevel) {
+    private void listHierarchically(List<Category> sortedCategories, Category parent, int subLevel) {
         String name = "";
         for (int i = 0; i < subLevel; i++) {
-            name += "\u200E \u200E \u200E \u200E ";
+            name += " > ";
         }
 
-        sortedCategories.add(new Category(name + parent.getName()));
+        sortedCategories.add(Category.copy(parent, name + parent.getName()));
 
         Set<Category> children = parent.getChildren();
         for (Category child : children) {
-            listChildrenCategory(sortedCategories, child, subLevel + 1);
+            listHierarchically(sortedCategories, child, subLevel + 1);
         }
     }
 
     public Page<Category> paginate(int pageNumber, String sortField, String sortOrder, String keyword) {
-        Sort sort = Sort.by(sortField);
-        sort = sortOrder.equals("asc") ? sort.ascending() : sort.descending();
-        int pageSize = 5;
-        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, sort);
-        if (keyword != null) return categoryRepository.findAllByKeyword(keyword, pageable);
-        return categoryRepository.findAll(pageable);
+        Iterable<Category> categories = categoryRepository.findAll();
+        List<Category> sortedCategories = new ArrayList<>();
+        for (Category category : categories) {
+            if (category.getParent() == null) {
+                listHierarchically(sortedCategories, category, 0);
+            }
+        }
+
+        if (keyword != null) {
+            sortedCategories = sortedCategories.stream()
+                    .filter(c -> c.getName().contains(keyword))
+                    .collect(Collectors.toList());
+        }
+
+        int start = (pageNumber - 1) * PAGESIZE;
+        int end = Math.min((start + PAGESIZE), sortedCategories.size());
+        List<Category> list = sortedCategories.subList(start, end);
+
+        Page<Category> categoryPage = new PageImpl<>(list, PageRequest.of(pageNumber - 1, PAGESIZE), sortedCategories.size());
+
+        return categoryPage;
     }
 
     public Category getById(Integer id) throws CategoryNotFoundException {
